@@ -1,9 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-import Nav from '../../components/Nav.astro';
-import Footer from '../../components/Footer.astro';
-import { CATEGORY } from '../../lib/categories';
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { CATEGORY } from '../lib/categories';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -13,6 +13,7 @@ export async function getStaticPaths() {
   }));
 }
 
+const base = import.meta.env.BASE_URL; // '/work/'
 const { project } = Astro.props;
 const d = project.data;
 const c = CATEGORY[d.category];
@@ -26,7 +27,7 @@ const { Content } = await render(project);
     <section class="relative overflow-hidden pt-36 pb-12 md:pt-44">
       <div class="aura left-[-5%] top-[-10%] h-[480px] w-[480px]"></div>
       <div class="relative mx-auto max-w-4xl px-6">
-        <a href="/#work" class="mb-8 inline-flex items-center gap-1.5 text-sm text-ink-mute transition-colors hover:text-ink">
+        <a href={`${base}#work`} class="mb-8 inline-flex items-center gap-1.5 text-sm text-ink-mute transition-colors hover:text-ink">
           ← All work
         </a>
         <div class="flex flex-wrap items-center gap-3">
@@ -74,7 +75,7 @@ const { Content } = await render(project);
              radial-gradient(120% 120% at 90% 100%, color-mix(in oklab, var(--accent) 20%, transparent), transparent 55%),
              linear-gradient(155deg, var(--color-bg-2), var(--color-bg)); border:1px solid var(--color-border);">
         {d.cover ? (
-          <img src={d.cover} alt={`${d.title} screenshot`} loading="lazy" decoding="async"
+          <img src={base + d.cover.replace(/^\//, '')} alt={`${d.title} screenshot`} loading="lazy" decoding="async"
                class="block w-full" />
         ) : (
           <>
