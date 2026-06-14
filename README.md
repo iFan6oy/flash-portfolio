@@ -48,5 +48,20 @@ npm run preview
 
 ## Deploy
 
-Static output in `dist/`. Drop on Vercel (framework preset: Astro) or any static host.
-Set `site` in `astro.config.mjs` to the final domain (currently `jaylonmalone.dev`).
+This site is served at **flashaisolutions.org/work/**, embedded as a static build
+inside the `flash-ai-solutions` repo (which is what Vercel deploys). It is configured
+with `base: '/work'` in `astro.config.mjs` — every internal link/asset is prefixed via
+`import.meta.env.BASE_URL`, so the whole thing lives under `/work` without collisions.
+
+To ship an update:
+
+```bash
+npm run build
+# wipe + copy the build into the site repo's /work folder
+rm -rf ../flash-ai-solutions/work && mkdir ../flash-ai-solutions/work
+cp -r dist/. ../flash-ai-solutions/work/
+# commit + push flash-ai-solutions -> Vercel auto-deploys
+cd ../flash-ai-solutions && git add work && git commit -m "site: update /work portfolio" && git push
+```
+
+The "Work" nav link in `flash-ai-solutions/index.html` points to `/work/`.
