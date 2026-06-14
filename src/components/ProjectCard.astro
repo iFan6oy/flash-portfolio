@@ -1,0 +1,118 @@
+---
+import { CATEGORY, type Category } from '../lib/categories';
+
+interface Props {
+  slug: string;
+  title: string;
+  tagline: string;
+  category: Category;
+  status: string;
+  stack: string[];
+  isPrivate?: boolean;
+  large?: boolean;
+  cover?: string;
+}
+
+const { slug, title, tagline, category, status, stack, isPrivate = false, large = false, cover } =
+  Astro.props;
+const c = CATEGORY[category];
+const initials = title
+  .replace(/[^a-zA-Z ]/g, '')
+  .split(' ')
+  .slice(0, 2)
+  .map((w) => w[0])
+  .join('');
+---
+
+<a
+  href={`/work/${slug}`}
+  class="group relative flex flex-col overflow-hidden rounded-2xl transition-all duration-500 hover:-translate-y-1"
+  style={`--accent:${c.accent}; --accent-rgb:${c.rgb}; background: var(--color-bg-1); border:1px solid var(--color-border);`}
+  data-hovercard
+>
+  <!-- cover: real screenshot when present, else generated gradient art -->
+  <div
+    class={`relative w-full overflow-hidden ${large ? 'aspect-[16/8]' : 'aspect-[16/10]'}`}
+    style="background:
+      radial-gradient(120% 120% at 15% 10%, color-mix(in oklab, var(--accent) 36%, transparent), transparent 55%),
+      radial-gradient(120% 120% at 85% 90%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 50%),
+      linear-gradient(160deg, var(--color-bg-2), var(--color-bg));"
+  >
+    {cover ? (
+      <>
+        <img
+          src={cover}
+          alt={`${title} screenshot`}
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+        />
+        <div
+          class="absolute inset-0"
+          style="background: linear-gradient(180deg, transparent 55%, color-mix(in oklab, var(--color-bg-1) 92%, transparent)); box-shadow: inset 0 0 60px color-mix(in oklab, var(--accent) 14%, transparent);"
+        />
+      </>
+    ) : (
+      <>
+        <div
+          class="absolute inset-0 opacity-[0.07]"
+          style="background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px); background-size: 38px 38px;"
+        />
+        <span
+          class="absolute bottom-4 left-5 font-display font-bold leading-none opacity-90 transition-transform duration-500 group-hover:scale-105"
+          style={`font-size:${large ? '5.5rem' : '4rem'}; color: color-mix(in oklab, var(--accent) 85%, #fff); text-shadow: 0 8px 40px color-mix(in oklab, var(--accent) 40%, transparent);`}
+        >
+          {initials}
+        </span>
+      </>
+    )}
+    <span
+      class="absolute right-4 top-4 rounded-full px-2.5 py-1 text-[11px] font-medium tracking-wide"
+      style="background: rgba(0,0,0,0.45); color: var(--accent); border: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);"
+    >
+      {status}
+    </span>
+  </div>
+
+  <!-- body -->
+  <div class="flex flex-1 flex-col gap-3 p-5">
+    <div class="flex items-center gap-2">
+      <span
+        class="text-[11px] font-semibold uppercase tracking-[0.14em]"
+        style="color: var(--accent);">{c.label}</span
+      >
+      {
+        isPrivate && (
+          <span class="text-[10px] uppercase tracking-wider text-ink-faint">
+            · Private
+          </span>
+        )
+      }
+    </div>
+
+    <h3 class={`font-display font-semibold text-ink ${large ? 'text-2xl' : 'text-xl'}`}>
+      {title}
+    </h3>
+    <p class="text-sm leading-relaxed text-ink-soft line-clamp-3">{tagline}</p>
+
+    <div class="mt-auto flex flex-wrap gap-1.5 pt-2">
+      {
+        stack.slice(0, large ? 6 : 4).map((s) => (
+          <span
+            class="rounded-md px-2 py-1 text-[11px] text-ink-mute"
+            style="background: var(--color-bg-2); border:1px solid var(--color-border);"
+          >
+            {s}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- hover glow edge -->
+  <div
+    class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+    style="box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--accent) 55%, transparent), 0 24px 70px -20px color-mix(in oklab, var(--accent) 35%, transparent);"
+  >
+  </div>
+</a>
