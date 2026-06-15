@@ -1,0 +1,260 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL; // '/work/'
+---
+
+<Base
+  title="AI Workflow Audit — Flash AI Solutions"
+  description="A flat-fee teardown of your workflow from someone who runs AI systems in production. What to automate, what to skip, what each move costs."
+>
+  <style is:global>
+    :root { --accent: #10b981; --accent-rgb: 16 185 129; }
+
+    .audit-wrap { max-width: 60rem; margin: 0 auto; padding: 0 1.25rem; }
+
+    .pill {
+      display:inline-flex; align-items:center; gap:0.5rem;
+      border:1px solid var(--color-border); border-radius:999px;
+      padding:0.4rem 1rem; font-size:0.8rem; color:var(--color-ink-soft);
+      background:var(--color-bg-1);
+    }
+    .pill .dot { width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent); }
+
+    .card {
+      border:1px solid var(--color-border); border-radius:1rem;
+      background:var(--color-bg-1); padding:1.5rem;
+    }
+
+    .check { display:flex; gap:0.7rem; align-items:flex-start; margin-bottom:0.9rem; }
+    .check svg { flex-shrink:0; margin-top:2px; }
+
+    .step-num {
+      width:38px;height:38px;border-radius:50%; flex-shrink:0;
+      display:grid;place-items:center; font-family:var(--font-display); font-weight:700;
+      background:color-mix(in oklab,var(--accent) 16%,var(--color-bg-2)); color:var(--accent);
+      border:1px solid color-mix(in oklab,var(--accent) 35%,transparent);
+    }
+
+    .field { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.1rem; }
+    .field label { font-size:0.85rem; color:var(--color-ink-soft); font-weight:500; }
+    .field input, .field textarea, .field select {
+      width:100%; padding:0.8rem 1rem; min-height:48px;
+      background:var(--color-surface); color:var(--color-ink);
+      border:1px solid var(--color-border); border-radius:0.65rem;
+      font-family:var(--font-sans); font-size:0.95rem;
+      transition:border-color 0.15s, box-shadow 0.15s;
+    }
+    .field textarea { min-height:120px; resize:vertical; line-height:1.5; }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline:none; border-color:var(--accent);
+      box-shadow:0 0 0 1px var(--accent), 0 0 22px -6px color-mix(in oklab,var(--accent) 40%,transparent);
+    }
+
+    .btn-accent {
+      display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;
+      padding:0.95rem 2rem; min-height:50px; border:none; border-radius:0.75rem;
+      background:var(--accent); color:#04130d; cursor:pointer; text-decoration:none;
+      font-family:var(--font-display); font-size:1rem; font-weight:700;
+      box-shadow:0 0 26px -6px color-mix(in oklab,var(--accent) 55%,transparent);
+      transition:opacity 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+    .btn-accent:hover { opacity:0.92; box-shadow:0 0 40px -4px color-mix(in oklab,var(--accent) 70%,transparent); }
+    .btn-accent:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    .btn-accent:disabled { opacity:0.5; cursor:not-allowed; }
+
+    .honey { position:absolute; left:-5000px; }
+  </style>
+
+  <main>
+    <!-- HERO -->
+    <section class="relative overflow-hidden" style="padding:7rem 0 4rem;">
+      <div class="aura" style="width:560px;height:560px;left:-12%;top:-8%;--accent:#10b981;opacity:0.4;"></div>
+      <div class="aura" style="width:420px;height:420px;right:-8%;top:30%;--accent:#00d4ff;opacity:0.18;"></div>
+
+      <div class="audit-wrap relative" style="z-index:1;">
+        <p class="pill reveal"><span class="dot"></span> Flash AI Solutions · Workflow Audit</p>
+        <h1 class="reveal text-gradient font-display font-bold" style="font-size:clamp(2.3rem,6.5vw,4.2rem);line-height:1.02;letter-spacing:-0.025em;margin-top:1.25rem;max-width:18ch;">
+          Stop guessing which AI is worth it.
+        </h1>
+        <p class="reveal font-display font-bold" style="font-size:clamp(1.3rem,3.5vw,2rem);line-height:1.12;color:var(--color-ink);margin-top:0.4rem;max-width:20ch;">
+          Get a straight answer from someone who runs it in production.
+        </p>
+        <p class="reveal" style="margin-top:1.5rem;font-size:clamp(1rem,2.2vw,1.15rem);color:var(--color-ink-soft);line-height:1.6;max-width:42rem;">
+          You keep getting told to use AI. You have tried a few tools and you are still doing the same
+          repetitive work every week. The audit fixes that with a clear, ranked plan: what to automate,
+          what to skip, and what each move actually costs.
+        </p>
+        <div class="reveal" style="margin-top:2rem;">
+          <a href="#intake" class="btn-accent">
+            Start your audit
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="edge-fade-b" style="position:absolute;inset-x:0;bottom:0;height:160px;pointer-events:none;"></div>
+    </section>
+
+    <!-- PROOF -->
+    <section class="audit-wrap" style="padding:2rem 0 3rem;">
+      <div class="reveal card" style="background:radial-gradient(120% 120% at 0% 0%, color-mix(in oklab,var(--accent) 10%,transparent), transparent 55%), var(--color-bg-1);">
+        <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);font-weight:600;margin-bottom:0.75rem;">Why my read is worth something</p>
+        <p style="font-size:1.05rem;color:var(--color-ink);line-height:1.6;">
+          I do not teach this from a slide. I run a fleet of AI agents on my own servers. One trades real
+          money on a 15 second loop. Another watches 9 job boards and writes a tailored cover letter for
+          every role. I built a 43,000-line platform that runs my entire day, and before this, a workflow
+          system used by 7,200 staff across 92 schools.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:1.5rem;max-width:30rem;">
+          <div><div class="font-display" style="font-size:1.9rem;font-weight:700;color:var(--color-ink);">7,200</div><div style="font-size:0.8rem;color:var(--color-ink-mute);">staff on a system I built</div></div>
+          <div><div class="font-display" style="font-size:1.9rem;font-weight:700;color:var(--color-ink);">15s</div><div style="font-size:0.8rem;color:var(--color-ink-mute);">trade loop, real money, live</div></div>
+          <div><div class="font-display" style="font-size:1.9rem;font-weight:700;color:var(--color-ink);">9</div><div style="font-size:0.8rem;color:var(--color-ink-mute);">job boards an agent watches</div></div>
+          <div><div class="font-display" style="font-size:1.9rem;font-weight:700;color:var(--color-ink);">production</div><div style="font-size:0.8rem;color:var(--color-ink-mute);">not demos, systems that stay running</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT YOU GET -->
+    <section class="audit-wrap" style="padding:2rem 0;">
+      <h2 class="reveal font-display font-bold" style="font-size:clamp(1.6rem,4vw,2.4rem);color:var(--color-ink);margin-bottom:1.5rem;letter-spacing:-0.02em;">What you get</h2>
+      <div class="reveal card">
+        <div id="get-list"></div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="audit-wrap" style="padding:2rem 0;">
+      <h2 class="reveal font-display font-bold" style="font-size:clamp(1.6rem,4vw,2.4rem);color:var(--color-ink);margin-bottom:1.5rem;letter-spacing:-0.02em;">How it works</h2>
+      <div id="steps" style="display:flex;flex-direction:column;gap:1.25rem;"></div>
+      <p class="reveal" style="margin-top:1.75rem;font-size:0.95rem;color:var(--color-ink-soft);line-height:1.6;">
+        One flat fee, scoped to your situation. No retainer, no upsell pressure. The plan is yours to keep
+        whether you build it or hire me to.
+      </p>
+    </section>
+
+    <!-- INTAKE -->
+    <section id="intake" class="audit-wrap" style="padding:3rem 0 5rem;scroll-margin-top:2rem;">
+      <div class="reveal card" style="position:relative;overflow:hidden;">
+        <div class="aura" style="width:360px;height:360px;right:-15%;top:-30%;--accent:#10b981;opacity:0.16;"></div>
+        <div style="position:relative;z-index:1;">
+          <h2 class="font-display font-bold" style="font-size:clamp(1.5rem,4vw,2.1rem);color:var(--color-ink);letter-spacing:-0.02em;">Tell me what is eating your week.</h2>
+          <p style="color:var(--color-ink-soft);margin-top:0.5rem;line-height:1.55;">Two minutes. I read every one and reply within a day with next steps.</p>
+
+          <form id="audit-form" style="margin-top:1.75rem;">
+            <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+            <input type="hidden" name="_subject" value="New Workflow Audit request" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" type="text" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="f-email">Email (where I send the plan)</label>
+              <input id="f-email" name="email" type="email" required autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="f-biz">What do you do? (business or role)</label>
+              <input id="f-biz" name="business" type="text" />
+            </div>
+            <div class="field">
+              <label for="f-pain">The repetitive work that eats your time</label>
+              <textarea id="f-pain" name="repetitive_work" required placeholder="The task you do over and over that you wish you did not have to."></textarea>
+            </div>
+            <div class="field">
+              <label for="f-budget">Budget and timeline</label>
+              <select id="f-budget" name="budget_timeline">
+                <option value="">Pick one</option>
+                <option>Just exploring, no rush</option>
+                <option>Have a budget, want it soon</option>
+                <option>Need this handled now</option>
+              </select>
+            </div>
+
+            <button type="submit" id="f-submit" class="btn-accent" style="width:100%;">
+              Send it to Jaylon
+            </button>
+            <p id="f-status" style="margin-top:0.9rem;font-size:0.85rem;color:var(--color-ink-mute);min-height:1.2em;"></p>
+          </form>
+
+          <div id="f-done" hidden style="text-align:center;padding:1.5rem 0;">
+            <div style="width:56px;height:56px;border-radius:50%;margin:0 auto 1rem;display:grid;place-items:center;background:color-mix(in oklab,var(--accent) 16%,transparent);border:1px solid color-mix(in oklab,var(--accent) 40%,transparent);">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="font-display font-bold" style="font-size:1.4rem;color:var(--color-ink);">Got it.</h3>
+            <p style="color:var(--color-ink-soft);margin-top:0.5rem;line-height:1.55;">I will reply within a day with next steps. Check your email.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="reveal" style="text-align:center;margin-top:2rem;font-size:0.85rem;color:var(--color-ink-faint);">
+        Not sure where to start? <a href={base + 'filter/'} style="color:var(--color-ink-mute);text-decoration:underline;">Run the free AI Side Hustle Filter</a> first.
+      </p>
+    </section>
+  </main>
+
+  <script is:inline>
+    // ---- content (kept in JS so the lists stay consistent and easy to edit) ----
+    const GET = [
+      "A 45-minute call where we go through your real week, task by task.",
+      "A written audit ranking every repetitive process by time and money saved against how hard it is to automate.",
+      "The specific tool or approach for each one, with rough cost and effort.",
+      "A skip list: the AI spend that is a waste of your money right now.",
+      "Two or three quick wins you can set up this week.",
+      "A short Loom walking you through the plan so you can revisit it anytime."
+    ];
+    const STEPS = [
+      ["Tell me about your week", "Fill the form below. The more honest you are about the boring, repetitive stuff, the better the plan."],
+      ["We get on a call", "45 minutes, screen share welcome. We go through where your time actually goes."],
+      ["You get a ranked plan", "A written teardown you keep: what to automate first, what to ignore, and the exact next move."]
+    ];
+    const check = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    document.getElementById('get-list').innerHTML = GET.map(t =>
+      '<div class="check">' + check + '<span style="color:var(--color-ink-soft);line-height:1.5;">' + t + '</span></div>'
+    ).join('');
+    document.getElementById('steps').innerHTML = STEPS.map((s,i) =>
+      '<div class="reveal card" style="display:flex;gap:1rem;align-items:flex-start;">' +
+        '<div class="step-num">' + (i+1) + '</div>' +
+        '<div><h3 class="font-display" style="font-size:1.1rem;font-weight:700;color:var(--color-ink);margin-bottom:0.3rem;">' + s[0] + '</h3>' +
+        '<p style="color:var(--color-ink-soft);line-height:1.55;font-size:0.95rem;">' + s[1] + '</p></div>' +
+      '</div>'
+    ).join('');
+
+    // reveal the dynamically-added cards
+    requestAnimationFrame(() => document.querySelectorAll('#steps .reveal').forEach(el => el.classList.add('in')));
+
+    // smooth scroll for the hero CTA
+    document.querySelector('a[href="#intake"]').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('intake').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // ---- form submit (Formsubmit AJAX, no backend needed) ----
+    const form = document.getElementById('audit-form');
+    const statusEl = document.getElementById('f-status');
+    const submitBtn = document.getElementById('f-submit');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (form._honey && form._honey.value) return; // bot trap
+      submitBtn.disabled = true; submitBtn.textContent = 'Sending...';
+      statusEl.textContent = '';
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/malone.jaylon@gmail.com', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form)
+        });
+        if (res.ok) {
+          form.setAttribute('hidden', '');
+          document.getElementById('f-done').removeAttribute('hidden');
+          document.getElementById('f-done').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          throw new Error('bad status ' + res.status);
+        }
+      } catch (err) {
+        submitBtn.disabled = false; submitBtn.textContent = 'Send it to Jaylon';
+        statusEl.textContent = 'Something went wrong. Email me directly at malone.jaylon@gmail.com';
+      }
+    });
+  </script>
+</Base>
