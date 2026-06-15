@@ -107,7 +107,7 @@ import { QUESTIONS, PATHS, WEIGHTS, RATING_LEGEND } from '../lib/filterData';
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;text-align:center;gap:1.5rem;max-width:32rem;margin:0 auto;">
       <h1 style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;color:#f4f4f8;line-height:1.1;">Most AI side hustles are garbage. Find the few that actually fit you.</h1>
       <p style="color:#b7b9c8;line-height:1.6;">This tool needs JavaScript for the 5-question quiz. Want the honest breakdown anyway? Get the full guide, free:</p>
-      <a href="https://flashaisolutions.gumroad.com/l/vfwqjs" style="display:inline-block;padding:0.875rem 2rem;background:#7c5cfa;color:#fff;border-radius:0.75rem;font-weight:600;text-decoration:none;">Get the free guide</a>
+      <a href="https://www.flashaisolutions.org/work/ai-side-hustle-blueprint.pdf" style="display:inline-block;padding:0.875rem 2rem;background:#7c5cfa;color:#fff;border-radius:0.75rem;font-weight:600;text-decoration:none;">Get the free guide</a>
     </div>
   </noscript>
 
@@ -194,7 +194,8 @@ import { QUESTIONS, PATHS, WEIGHTS, RATING_LEGEND } from '../lib/filterData';
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script define:vars={{ QUESTIONS, PATHS, WEIGHTS, RATING_LEGEND }} is:inline>
-    const GUMROAD_URL = 'https://flashaisolutions.gumroad.com/l/vfwqjs';
+    const ML_ENDPOINT = 'https://assets.mailerlite.com/jsonp/2447776/forms/190383921115957156/subscribe';
+    const GUIDE_URL = 'https://www.flashaisolutions.org/work/ai-side-hustle-blueprint.pdf';
 
     let currentQ = 0;
     let answers = { time: null, budget: null, edge: [], speed: null, goal: null };
@@ -409,7 +410,11 @@ import { QUESTIONS, PATHS, WEIGHTS, RATING_LEGEND } from '../lib/filterData';
         + '<h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--color-ink);margin-bottom:0.4rem;">Get the full guide, free</h3>'
         + '<p style="font-size:0.875rem;color:var(--color-ink-soft);margin-bottom:1.5rem;line-height:1.55;">The honest breakdown of every path, the real first steps, and a month-one plan. Sent straight to your inbox, no charge.</p>'
         + '<div style="display:flex;flex-direction:column;gap:0.75rem;">'
-          + '<a href="' + esc(GUMROAD_URL) + '" target="_blank" rel="noopener noreferrer" class="btn-primary" style="width:100%;justify-content:center;">Email me the guide</a>'
+          + '<form id="ml-form" style="display:flex;flex-direction:column;gap:0.6rem;">'
+            + '<input id="ml-email" type="email" required placeholder="you@email.com" autocomplete="email" style="width:100%;padding:0.8rem 1rem;min-height:48px;background:var(--color-surface);color:var(--color-ink);border:1px solid var(--color-border);border-radius:0.65rem;font-family:var(--font-sans);font-size:0.95rem;text-align:center;" />'
+            + '<button type="submit" id="ml-submit" class="btn-primary" style="width:100%;justify-content:center;">Email me the guide</button>'
+          + '</form>'
+          + '<p id="ml-status" style="font-size:0.8rem;color:var(--color-ink-mute);min-height:1em;margin:0.25rem 0 0;"></p>'
           + '<div style="display:flex;gap:0.625rem;">'
             + '<button id="btn-share"   class="btn-ghost" style="flex:1;">Share results</button>'
             + '<button id="btn-restart" class="btn-ghost" style="flex:1;">Start over</button>'
@@ -435,6 +440,35 @@ import { QUESTIONS, PATHS, WEIGHTS, RATING_LEGEND } from '../lib/filterData';
 
       document.getElementById('btn-share').addEventListener('click', shareResults);
       document.getElementById('btn-restart').addEventListener('click', restart);
+      const _mlForm = document.getElementById('ml-form');
+      if (_mlForm) _mlForm.addEventListener('submit', submitEmail);
+    }
+
+    async function submitEmail(e) {
+      e.preventDefault();
+      const input = document.getElementById('ml-email');
+      const email = (input.value || '').trim();
+      if (!email) return;
+      const btn = document.getElementById('ml-submit');
+      btn.disabled = true; btn.textContent = 'Sending...';
+      const fd = new FormData();
+      fd.append('fields[email]', email);
+      fd.append('ml-submit', '1');
+      fd.append('anticsrf', 'true');
+      try { await fetch(ML_ENDPOINT, { method: 'POST', body: fd }); } catch (err) {}
+      showGuideDelivered();
+    }
+
+    function showGuideDelivered() {
+      const f = document.getElementById('ml-form');
+      const s = document.getElementById('ml-status');
+      if (f) f.style.display = 'none';
+      if (s) {
+        s.innerHTML = 'You are in. Get the guide right now: <a href="' + esc(GUIDE_URL) + '" target="_blank" rel="noopener noreferrer" style="color:#7c5cfa;text-decoration:underline;">open it here</a>. The full breakdown is also on its way to your inbox.';
+        s.style.color = 'var(--color-ink-soft)';
+        s.style.fontSize = '0.95rem';
+        s.style.lineHeight = '1.5';
+      }
     }
 
     function shareResults() {
