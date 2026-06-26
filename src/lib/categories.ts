@@ -31,18 +31,18 @@ export const GROUPS = {
     title: 'Business Systems',
     kicker: 'Enterprise workflows, productized',
     blurb:
-      'Production systems that move real work — approvals, reimbursements, leads. The track record under the rest.',
+      'Production systems that move real work: approvals, reimbursements, leads. The track record under the rest.',
   },
   ai: {
     title: 'AI & Automation',
     kicker: 'Agents, pipelines, orchestration',
     blurb:
-      'Autonomous agents and LLM pipelines built with a cost-aware, grounded discipline — not demos.',
+      'Autonomous agents and LLM pipelines built with a cost-aware, grounded discipline, not demos.',
   },
   experiments: {
     title: 'Experiments & Labs',
     kicker: 'Range, frontier stacks, game-feel',
     blurb:
-      'Where I stretch — raw GPU compute, modern TS frontiers, and tight interaction engineering.',
+      'Where I stretch: raw GPU compute, modern TS frontiers, and tight interaction engineering.',
   },
 } as const;

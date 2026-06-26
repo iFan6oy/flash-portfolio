@@ -1,6 +1,6 @@
 ---
 title: Hono Trading API
-tagline: A type-safe trading microservice on a best-in-class modern stack — Bun, Hono, tRPC, Drizzle.
+tagline: "A type-safe trading microservice on a best-in-class modern stack: Bun, Hono, tRPC, Drizzle."
 category: lab
 group: experiments
 role: Solo Developer
@@ -24,7 +24,7 @@ links:
   caseStudy: /work/hono-trading-api
 ---
 
-A type-safe trading API microservice built on Bun + Hono + tRPC + Drizzle + Zod — an
+A type-safe trading API microservice built on Bun + Hono + tRPC + Drizzle + Zod, an
 intentional exploration of the modern TypeScript frontier. End-to-end type safety
 from schema to client, with webhook-authed endpoints. The "I keep up with the
 ecosystem" piece.

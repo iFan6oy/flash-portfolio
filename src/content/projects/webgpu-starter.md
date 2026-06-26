@@ -1,6 +1,6 @@
 ---
 title: WebGPU Particle Field
-tagline: 300,000 GPU-simulated particles bending around a cursor gravity well — pure compute shaders, zero build.
+tagline: 300,000 GPU-simulated particles bending around a cursor gravity well, pure compute shaders, zero build.
 category: lab
 group: experiments
 role: Solo Developer
@@ -22,5 +22,5 @@ links:
 ---
 
 A single-file WebGPU demo that simulates 300,000 particles on the GPU with a cursor
-gravity well — written in WGSL compute shaders with no build step. Proof I can drop
+gravity well, written in WGSL compute shaders with no build step. Proof I can drop
 to the metal when a problem calls for raw graphics performance.

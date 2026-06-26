@@ -7,9 +7,12 @@ interface Props {
 }
 
 const {
-  title = 'Jaylon Malone — Software Developer & AI Solutions Architect',
+  title = 'Jaylon Malone · Software Developer & AI Solutions Architect',
   description = 'Jaylon Malone builds AI-powered products, autonomous agents, enterprise workflow systems, and full-stack apps. Mobile, AL. Founder of Flash AI Solutions.',
 } = Astro.props;
+
+const ogImage = new URL(`${import.meta.env.BASE_URL}og.png`, Astro.site).href;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -25,6 +28,16 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Jaylon Malone" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Jaylon Malone, Software Developer and AI Solutions Architect" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#07070c" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

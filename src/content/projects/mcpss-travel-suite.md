@@ -1,10 +1,10 @@
 ---
 title: MCPSS Travel Reimbursement Suite
-tagline: A district-wide reimbursement and voucher automation platform — 92 schools, 7,200 staff, in production for three years.
+tagline: A district-wide reimbursement and voucher automation platform, 92 schools, 7,200 staff, in production for three years.
 category: power
 group: business
 role: Application Developer (MCPSS)
-year: 2023 — 2026
+year: 2023 to 2026
 status: Shipped
 featured: false
 order: 10
@@ -25,7 +25,7 @@ links:
 ---
 
 For three years I was the Application Developer behind Mobile County Public Schools'
-Travel Reimbursement & Voucher Automation Suite — a production Power Platform system
+Travel Reimbursement & Voucher Automation Suite, a production Power Platform system
 serving 92 schools and 7,200 staff.
 
 ## Scope
@@ -40,7 +40,7 @@ serving 92 schools and 7,200 staff.
 - Also delivered a Student Discipline Referral system, asset-lifecycle tracking, and
   Power BI dashboards over SharePoint + SQL.
 
-This is the real enterprise foundation under everything else — and the direct
+This is the real enterprise foundation under everything else, and the direct
 ancestor of TRA.
 
 > Presented as a sanitized case study; no district data is shown.

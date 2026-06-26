@@ -5,7 +5,7 @@ cover: /covers/openclaw.png
 category: ai
 group: featured
 role: Solo Developer
-year: 2026 — Present
+year: 2026 to Present
 status: Active
 featured: true
 order: 3
@@ -31,10 +31,10 @@ approval over Telegram.
 
 ## The hard lesson, encoded
 
-An earlier "architect mode" hallucinated progress — it claimed wins that never
+An earlier "architect mode" hallucinated progress. It claimed wins that never
 happened. The current design fixes that with a **grounding rule**: no observation
 gets posted without a citation back to a real event log line. That single constraint
 is what makes an autonomous agent trustworthy enough to leave running.
 
-This is the cleanest public window into how I think about agentic systems — safety
+This is the cleanest public window into how I think about agentic systems: safety
 classification, human-in-the-loop escalation, and grounding over vibes.
