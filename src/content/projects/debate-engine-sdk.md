@@ -23,5 +23,5 @@ links:
 
 The debate pattern that powers Flash Trader, extracted into a reusable Python package:
 spin up a bull and a bear, let them argue a decision, and have a judge rule. It
-encodes the cost-aware cascade — rule-based first, LLM only when the call is close —
+encodes the cost-aware cascade (rule-based first, LLM only when the call is close)
 that I reuse across six projects.

@@ -1,6 +1,6 @@
 ---
 title: Lead Scraper
-tagline: A local-business lead engine — multi-source scrape, contact enrichment, scoring, and bulk outreach export.
+tagline: "A local-business lead engine: multi-source scrape, contact enrichment, scoring, and bulk outreach export."
 category: data
 group: business
 role: Solo Developer

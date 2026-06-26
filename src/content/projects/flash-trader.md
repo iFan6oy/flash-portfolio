@@ -5,7 +5,7 @@ cover: /covers/flash-trader.png
 category: trading
 group: featured
 role: Solo Developer
-year: 2025 — Present
+year: 2025 to Present
 status: Live
 featured: true
 order: 2
@@ -19,7 +19,7 @@ stack:
   - PM2 / Hetzner
 highlights:
   - Rule-based heuristic debate first; LLM escalation only on close calls (cost-aware)
-  - Multi-market — Solana DEX, pump.fun, forex, and equities — with slippage + retry logic
+  - Multi-market (Solana DEX, pump.fun, forex, and equities) with slippage + retry logic
   - 15s trade loop with 4-layer position protection running live on a VPS
 links:
   caseStudy: /work/flash-trader

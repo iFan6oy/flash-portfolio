@@ -1,10 +1,10 @@
 ---
 title: Cutt It
-tagline: A premium barbershop booking app — full-stack mobile with real payments and a signed client partnership.
+tagline: A premium barbershop booking app, full-stack mobile with real payments and a signed client partnership.
 category: mobile
 group: featured
 role: Co-founder & Lead Developer
-year: 2025 — Present
+year: 2025 to Present
 status: Active
 featured: true
 order: 4
@@ -35,5 +35,5 @@ Node/PostgreSQL backend and Square payments.
 - **Backend:** Express + PostgreSQL with JWT auth and bcrypt, Square SDK for payments
   and catalog sync, node-cron for scheduled jobs.
 
-It's the strongest proof that I ship full-stack mobile products end to end — auth,
-payments, scheduling, and a designed UI — for paying clients.
+It's the strongest proof that I ship full-stack mobile products end to end (auth,
+payments, scheduling, and a designed UI) for paying clients.

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="badge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00D4FF"/>
+      <stop offset="1" stop-color="#7c5cfa"/>
+    </linearGradient>
+    <radialGradient id="glowc" cx="16%" cy="20%" r="60%">
+      <stop offset="0" stop-color="#00D4FF" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#00D4FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowp" cx="90%" cy="94%" r="55%">
+      <stop offset="0" stop-color="#7c5cfa" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#7c5cfa" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="head" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#cfefff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#07070c"/>
+  <rect width="1200" height="630" fill="url(#glowc)"/>
+  <rect width="1200" height="630" fill="url(#glowp)"/>
+  <rect x="24" y="24" width="1152" height="582" rx="28" fill="none" stroke="#ffffff" stroke-opacity="0.08"/>
+
+  <rect x="80" y="80" width="104" height="104" rx="24" fill="url(#badge)"/>
+  <text x="132" y="151" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="700" fill="#06070b" text-anchor="middle">JM</text>
+
+  <text x="210" y="123" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="600" fill="#e8eefc">Flash AI Solutions</text>
+  <text x="210" y="164" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="400" fill="#7d8aa3">Mobile, AL</text>
+
+  <text x="80" y="332" font-family="Segoe UI, Arial, sans-serif" font-size="96" font-weight="700" fill="url(#head)">Jaylon Malone</text>
+  <text x="80" y="394" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="500" fill="#aeb9cc">Software Developer · AI Solutions Architect</text>
+
+  <text x="80" y="454" font-family="Segoe UI, Arial, sans-serif" font-size="30" font-weight="500" fill="#00D4FF">AI products · autonomous systems · enterprise workflows</text>
+
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600">
+    <rect x="80" y="508" width="190" height="56" rx="28" fill="#11131c" stroke="#ffffff" stroke-opacity="0.08"/>
+    <text x="175" y="544" fill="#e8eefc" text-anchor="middle">7,200 staff</text>
+    <rect x="286" y="508" width="186" height="56" rx="28" fill="#11131c" stroke="#ffffff" stroke-opacity="0.08"/>
+    <text x="379" y="544" fill="#e8eefc" text-anchor="middle">92 schools</text>
+    <rect x="488" y="508" width="234" height="56" rx="28" fill="#11131c" stroke="#ffffff" stroke-opacity="0.08"/>
+    <text x="605" y="544" fill="#e8eefc" text-anchor="middle">6 live products</text>
+  </g>
+
+  <text x="1120" y="544" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="500" fill="#7d8aa3" text-anchor="end">flashaisolutions.org/work</text>
+</svg>

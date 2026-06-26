@@ -1,6 +1,6 @@
 ---
 title: Flash Outreach
-tagline: An end-to-end AI cold-email pipeline — pull leads, personalize, send with human pacing, and track replies.
+tagline: "An end-to-end AI cold-email pipeline: pull leads, personalize, send with human pacing, and track replies."
 category: ai
 group: ai
 role: Solo Developer
