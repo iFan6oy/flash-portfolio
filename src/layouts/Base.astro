@@ -4,14 +4,13 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
-  /** project cover path, e.g. /covers/x.png — falls back to the site OG card */
   ogImage?: string;
 }
 
 const {
-  title = 'Jaylon Malone · Application Developer and Systems Builder',
+  title = 'Jaylon Malone · Application Developer and Software Engineer',
   description =
-    'Jaylon Malone builds production software across AI pipelines, APIs, data systems, automation, and cross-device applications. Mobile, Alabama.',
+    'Jaylon Malone builds production applications, APIs, automation, AI systems, and cross-device software.',
   ogImage,
 } = Astro.props;
 
@@ -22,12 +21,11 @@ const shareCard = new URL(
 ).href;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
-/* Person schema so search engines can resolve who this is and what he does. */
 const personLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Jaylon Malone',
-  jobTitle: 'Application Developer and Systems Builder',
+  jobTitle: 'Application Developer and Software Engineer',
   url: new URL(base, Astro.site).href,
   email: 'mailto:jaylon@flashaisolutions.org',
   address: {
@@ -45,15 +43,9 @@ const personLd = {
     'https://linkedin.com/in/jaylon-malone',
   ],
   knowsAbout: [
-    'TypeScript',
-    'Python',
-    'Kotlin',
-    'Model Context Protocol',
-    'API design',
-    'Distributed systems',
-    'React Native',
-    'Jetpack Compose',
-    'Power Platform',
+    'TypeScript', 'Python', 'Kotlin', 'C#', 'SQL', 'API design',
+    'Model Context Protocol', 'Distributed systems', 'React Native',
+    'Jetpack Compose', 'Power Platform',
   ],
 };
 ---
@@ -77,52 +69,40 @@ const personLd = {
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Jaylon Malone" />
     <meta property="og:image" content={shareCard} />
-    <meta property="og:image:alt" content="Jaylon Malone, application developer and systems builder" />
+    <meta property="og:image:alt" content="Jaylon Malone, application developer and software engineer" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={shareCard} />
-    <meta name="theme-color" content="#07070c" />
+    <meta name="theme-color" content="#0b0b0c" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
 
     <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
-
-    <!-- no-JS safety: never hide content from crawlers or scripts-off users -->
-    <noscript>
-      <style>
-        .reveal { opacity: 1 !important; transform: none !important; }
-      </style>
-    </noscript>
-
-    <!-- Vercel Web Analytics: activates once Analytics is enabled on the project -->
+    <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
     <script defer src="/_vercel/insights/script.js"></script>
   </head>
-  <body class="grain min-h-screen antialiased">
+  <body class="min-h-screen antialiased">
     <a href="#main" class="skip-link">Skip to content</a>
     <slot />
 
-    <!-- reveal-on-scroll, self-cleaning observer (perf-aware per design rules) -->
     <script>
       const els = document.querySelectorAll('.reveal');
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!reduced && 'IntersectionObserver' in window && els.length) {
-        const io = new IntersectionObserver(
-          (entries) => {
-            for (const e of entries) {
-              if (e.isIntersecting) {
-                e.target.classList.add('in');
-                io.unobserve(e.target);
-              }
+        const io = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in');
+              io.unobserve(entry.target);
             }
-          },
-          { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
-        );
+          }
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
         els.forEach((el) => io.observe(el));
       } else {
         els.forEach((el) => el.classList.add('in'));
