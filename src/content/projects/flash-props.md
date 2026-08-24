@@ -9,6 +9,7 @@ status: Live
 featured: true
 order: 3
 private: false
+logo: ../../assets/logos/flash-props.svg
 diagram: flashProps
 stack:
   - TypeScript

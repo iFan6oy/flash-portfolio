@@ -13,7 +13,7 @@ import { glob } from 'astro/loaders';
  */
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     tagline: z.string(),
     category: z.enum([
@@ -46,6 +46,10 @@ const projects = defineCollection({
       })
       .default({}),
     cover: z.string().optional(),
+    /** brand mark for the project, resolved + optimized by astro:assets.
+     *  Path is relative to this markdown file. Optional: projects without a
+     *  logo simply render the title on its own. */
+    logo: image().optional(),
     featured: z.boolean().default(false),
     order: z.number().default(50), // lower = earlier
     private: z.boolean().default(false), // source can't be public; no repo link

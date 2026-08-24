@@ -9,6 +9,7 @@ status: Active
 featured: true
 order: 4
 private: true
+logo: ../../assets/logos/chalkline.png
 stack:
   - TypeScript
   - Next.js 16
