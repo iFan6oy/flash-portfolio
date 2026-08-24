@@ -84,7 +84,7 @@ function bullet(str) {
 centered('JAYLON MALONE', 17, 'F2', BLUE); y -= 18;
 centered('Software Engineer | Application Developer | AI & Systems Engineering', 9.6, 'F2', '0 0 0'); y -= 14;
 centered('Mobile, AL | (251) 391-5222 | jaylon@flashaisolutions.org', 8.2, 'F1', '0 0 0'); y -= 11;
-centered('flashaisolutions.org/work | github.com/iFan6oy | linkedin.com/in/jaylon-malone', 8.2, 'F1', BLUE); y -= 5;
+centered('flashaisolutions.org/work | github.com/iFan6oy | linkedin.com/in/jaylon-malone-3b306b37', 8.2, 'F1', BLUE); y -= 5;
 
 section('Professional Summary');
 para('Application developer and systems builder with a B.S. in Computer Science and professional experience shipping enterprise automation, cross-device applications, APIs/data products, AI workflows, and Linux-hosted production systems. Works end to end across TypeScript, Python, Kotlin, C#, SQL, React/React Native, Power Platform, PostgreSQL/SQLite, and modern API tooling.', 8.7, 10.2);
