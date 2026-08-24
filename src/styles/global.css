@@ -1,44 +1,41 @@
 @import 'tailwindcss';
 
-/* ----------------------------------------------------------------------------
-   FLASH PORTFOLIO — design tokens (Tailwind v4 CSS-first @theme)
-   Cinematic, world-not-page. Per-section color identity mirrors the hub map.
----------------------------------------------------------------------------- */
+/*
+  Portfolio V2
+  The portfolio is a hiring surface, not a themed product UI. The palette is
+  deliberately neutral and the single brand accent is used for interaction,
+  links, and small moments of hierarchy. Project screenshots provide the color.
+*/
 @theme {
-  /* base canvas */
-  --color-bg: #07070c;
-  --color-bg-1: #0b0b13;
-  --color-bg-2: #11111c;
-  --color-surface: #14141f;
-  --color-border: #20202e;
-  --color-border-bright: #2c2c40;
+  --color-bg: #0b0b0c;
+  --color-bg-1: #101012;
+  --color-bg-2: #151518;
+  --color-surface: #19191c;
+  --color-border: #2b2b30;
+  --color-border-bright: #44444b;
 
-  /* type */
-  --color-ink: #f4f4f8;
-  --color-ink-soft: #b7b9c8;
-  --color-ink-mute: #8b8d9f;
-  --color-ink-faint: #767889;
+  --color-ink: #f4f4f5;
+  --color-ink-soft: #c2c2c7;
+  --color-ink-mute: #97979f;
+  --color-ink-faint: #7f7f88;
 
-  /* brand */
-  --color-brand: #00d4ff;
-  --color-brand-deep: #0093b3;
+  --color-brand: #68c7e8;
+  --color-brand-deep: #3a9fc3;
 
-  /* per-vertical accents (canonical hub map) */
-  --color-ai: #7c5cfa;        /* cosmic purple — AI/agents */
-  --color-trade: #22c55e;     /* stake green — trading */
-  --color-money: #10b981;     /* money emerald — business systems */
-  --color-media: #ff6b35;     /* sunset orange — media */
-  --color-mobile: #ff2d7b;    /* neon magenta — mobile */
-  --color-data: #f59e0b;      /* amber — data/reporting */
-  --color-lab: #34d399;       /* console mint — experiments */
-  --color-power: #3b82f6;     /* civic blue — power platform */
+  /* Kept as compatibility aliases for the audit/filter pages. */
+  --color-ai: #68c7e8;
+  --color-trade: #68c7e8;
+  --color-money: #68c7e8;
+  --color-media: #68c7e8;
+  --color-mobile: #68c7e8;
+  --color-data: #68c7e8;
+  --color-lab: #68c7e8;
+  --color-power: #68c7e8;
 
-  /* fonts */
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -46,7 +43,7 @@
   :root {
     color-scheme: dark;
     --accent: var(--color-brand);
-    --accent-rgb: 0 212 255;
+    --accent-rgb: 104 199 232;
   }
 
   html {
@@ -56,6 +53,7 @@
   }
 
   body {
+    margin: 0;
     background: var(--color-bg);
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -63,109 +61,31 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--accent) 35%, transparent);
+    background: color-mix(in oklab, var(--color-brand) 36%, transparent);
     color: #fff;
   }
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
-    line-height: 1.02;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
   }
 
-  /* Custom scrollbar */
+  a {
+    text-underline-offset: 0.18em;
+  }
+
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: var(--color-bg); }
   ::-webkit-scrollbar-thumb {
     background: var(--color-border-bright);
-    border-radius: 6px;
-  }
-  ::-webkit-scrollbar-thumb:hover { background: #3a3a52; }
-}
-
-/* ---- atmosphere + utility layer ---- */
-@layer components {
-  /* film grain overlay */
-  .grain::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    pointer-events: none;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* accent-aware gradient text */
-  .text-gradient {
-    background: linear-gradient(120deg, var(--color-ink) 30%, var(--accent));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .accent-glow {
-    box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 30%, transparent),
-                0 18px 60px -12px color-mix(in oklab, var(--accent) 22%, transparent);
-  }
-
-  /* ambient blurred light blob */
-  .aura {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.5;
-    pointer-events: none;
-    background: radial-gradient(circle, color-mix(in oklab, var(--accent) 70%, transparent), transparent 70%);
-  }
-
-  .hairline {
-    border-color: var(--color-border);
-  }
-
-  /* fade content edges into the page bg (hero merge directive) */
-  .edge-fade-b {
-    -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
-    mask-image: linear-gradient(to bottom, #000 70%, transparent);
-  }
-}
-
-/* reveal-on-scroll (progressive enhancement; visible by default if no JS) */
-@media (prefers-reduced-motion: no-preference) {
-  .reveal {
-    opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
-  }
-  .reveal.in {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-
-/* ---- accessibility: visible focus, skip link, motion opt-out ---- */
-@layer base {
-  /* Never remove the focus ring; make it match the page accent instead. */
-  :where(a, button, [tabindex]):focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 6px;
-  }
-
-  .skip-link {
-    position: absolute;
-    left: -9999px;
-    top: 0;
-    z-index: 100;
-    padding: 0.75rem 1.15rem;
-    background: var(--color-brand);
-    color: #000;
-    font-weight: 600;
-    border-radius: 0 0 8px 0;
-  }
-  .skip-link:focus {
-    left: 0;
+    border-radius: 999px;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -175,5 +95,64 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+@layer components {
+  .hairline { border-color: var(--color-border); }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    padding: 0.75rem 1rem;
+    background: var(--color-ink);
+    color: var(--color-bg);
+    font-weight: 600;
+  }
+  .skip-link:focus { left: 0; }
+
+  .section-kicker {
+    color: var(--color-ink-mute);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .rule-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .rule-link::after {
+    content: '→';
+    color: var(--color-brand);
+    transition: transform 160ms ease;
+  }
+  .rule-link:hover::after { transform: translateX(3px); }
+
+  /* Legacy helpers remain intentionally quiet so non-portfolio utility pages do not break. */
+  .grain::after { content: none; }
+  .aura { display: none; }
+  .text-gradient { color: var(--color-ink); background: none; }
+  .accent-glow { box-shadow: none; }
+  .edge-fade-b { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* Portfolio reveal is intentionally subtle. Content remains visible with no JS. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
   }
 }
