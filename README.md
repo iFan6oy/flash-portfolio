@@ -1,115 +1,120 @@
 # Flash Portfolio
 
-Personal engineering portfolio for Jaylon Malone. Deployed at
-**[flashaisolutions.org/work](https://www.flashaisolutions.org/work/)**.
+Personal engineering portfolio for Jaylon Malone, deployed at
+**https://www.flashaisolutions.org/work/**.
 
-Positioning: application developer and systems builder. The site argues that through
-evidence (case studies with real architecture and real tradeoffs) rather than through
-adjectives. It deliberately mirrors the GitHub profile README so the two never
-contradict each other.
+The site is a hiring surface first. It presents production work, professional
+experience, and open-source evidence with a restrained editorial UI instead of a
+product-dashboard or sci-fi aesthetic.
 
 ## Stack
 
-- **Astro 5**, static output, zero client-side framework
-- **Tailwind 4** via `@tailwindcss/vite`, CSS-first `@theme` tokens
-- **Content collections**: projects are typed markdown data, never hardcoded markup
+- Astro 5, static output
+- Tailwind 4 via `@tailwindcss/vite`
+- Astro content collections with Zod validation
 - `@astrojs/sitemap`
+- Minimal inline JavaScript only for navigation and progressive reveal
 
 ## Run
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321/work/
-npm run build    # -> dist/
+npm run dev
+npm run build
 npm run preview
 ```
 
 ## Architecture
 
-```
+```text
 src/
-  content/projects/*.md   one file per project; frontmatter drives everything
-  content.config.ts       the typed schema (this is the contract)
-  lib/categories.ts       category accents + the Engineering Areas copy
-  lib/diagrams.ts         architecture diagrams, as data
-  lib/openSource.ts       the curated public-repo list
+  content/projects/*.md   structured project content
+  content.config.ts       typed project schema
+  lib/categories.ts       semantic project labels
+  lib/diagrams.ts         architecture diagrams as data
+  lib/openSource.ts       curated public repositories
   components/
-    FlowDiagram.astro     renders lib/diagrams.ts as responsive HTML
-    ProjectCard.astro     grid card
-    Nav.astro             includes the accessible mobile disclosure menu
+    FlowDiagram.astro     restrained semantic architecture renderer
+    Nav.astro             accessible desktop/mobile navigation
+    Footer.astro          contact/footer shell
   pages/
-    index.astro           hero, selected systems, areas, more, OSS, experience, about, contact
-    [slug].astro          generated case study per project
-    audit.astro           consulting funnel (Workflow Audit)
-    filter.astro          lead-magnet page
-  layouts/Base.astro      head, SEO, JSON-LD Person schema, skip link, reveal observer
+    index.astro           recruiter-first portfolio homepage
+    [slug].astro          generated editorial case studies
+    audit.astro           workflow-audit funnel
+    filter.astro          side-hustle filter
+  layouts/Base.astro      SEO, JSON-LD, accessibility, reveal observer
+  styles/global.css       neutral design tokens and shared accessibility rules
 ```
 
-### Adding or editing a project
+## Portfolio design rules
 
-Drop a `.md` file in `src/content/projects/`. Frontmatter is validated by
-`src/content.config.ts`, so a typo fails the build rather than rendering wrong.
+The portfolio should sell the engineering work, not the visual theme.
 
-Everything below `tagline` is optional. The strongest projects fill in the structured
-case-study fields and the detail page renders them as real sections; lighter entries
-just use the markdown body. A section with no content renders nothing rather than an
-empty heading.
+- One restrained brand accent. Projects do not get rainbow category identities.
+- Real screenshots and artifacts are preferred over decorative generated artwork.
+- No aura blobs, neon glows, sci-fi framing, fake terminals, skill meters, or logo walls.
+- Avoid walls of cards and pill tags. Use typography, whitespace, dividers, and hierarchy.
+- Flashpoint is the flagship; selected projects get editorial treatment; supporting work uses compact rows.
+- Professional experience appears before the long-tail project and open-source indexes.
+- Technology lists stay quiet. The project narrative should prove the skill.
+- Do not render a "what this demonstrates" section. The case study itself should demonstrate it.
+- No invented metrics, revenue, uptime, performance claims, users, or outcomes.
+- Private systems remain explicitly private and never expose credentials or personal infrastructure.
+- No em dashes.
 
-| Field | Purpose |
-|---|---|
-| `group` | `selected` (homepage headline grid) or `engineering` (secondary grid) |
-| `category` | drives the accent color, see `lib/categories.ts` |
-| `order` | lower sorts earlier within a group |
-| `private: true` | shows a "Private source" badge and omits any source link |
-| `problem` / `constraints` / `architecture` | the top of the case study |
-| `decisions` / `hardProblems` | arrays of `{ title, body }` |
-| `result` / `demonstrates` | closing sections |
-| `diagram` | key into `lib/diagrams.ts` |
-| `links.repoLabel` | override the repo button label, e.g. when the link is a public write-up of a pattern rather than the private implementation |
+## Content model
 
-**YAML gotcha:** any frontmatter string containing `": "` must be quoted, or the
-parser reads it as a map and the build fails with `bad indentation of a mapping entry`.
+Each project lives in `src/content/projects/`. Frontmatter is validated by
+`src/content.config.ts`; invalid content fails the Astro build.
 
-### Content rules
+Strong case studies may include:
 
-These are enforced by review, not by code:
+- `problem`
+- `constraints`
+- `architecture`
+- `diagram`
+- `decisions`
+- `hardProblems`
+- `result`
+- `links`
+- `cover`
 
-- **No invented numbers.** No users, revenue, uptime, latency, or percentages unless
-  the repository, logs, or documentation support them. Every figure on the site is
-  countable from the work itself.
-- **Private stays private.** A private system can be featured, but it is labeled
-  "Private source" and never links to closed source. No credentials, no infrastructure
-  detail, no client or personal data.
-- **No em dashes.**
+The page renderer skips empty sections rather than manufacturing filler.
 
 ## Accessibility and performance baseline
 
-Do not regress these:
+Do not regress:
 
-- Zero JavaScript bundles. The only scripts are the nav toggle, the reveal observer,
-  and analytics, all inline and tiny.
-- All body and label text clears 4.5:1 against the page background. `--color-ink-faint`
-  is the floor at 4.61:1, so do not darken the bottom of the ink ramp.
-- Focus rings are never removed; `:focus-visible` picks up the page accent.
-- `prefers-reduced-motion` disables the reveal animation and smooth scrolling.
-- No horizontal overflow at 375px. Diagrams reflow to a single column.
+- visible keyboard focus
+- skip link
+- semantic navigation
+- Escape-to-close mobile menu
+- 44px mobile navigation target
+- `prefers-reduced-motion`
+- readable contrast for all text tokens
+- no horizontal overflow at 375px
+- no JavaScript framework bundle
 
-## Deploy
+Project imagery should be compressed and responsive wherever practical. Avoid adding
+large PNGs when a WebP/AVIF asset can carry the same evidence.
 
-The site is served from `flashaisolutions.org/work/`, as a static build committed
-inside the `flash-ai-solutions` repo (which is what Vercel deploys). `base: '/work'`
-in `astro.config.mjs` prefixes every internal link and asset via
-`import.meta.env.BASE_URL`.
+## Deployment
 
-`site` is set to the **www** host because the apex 301s to it, so canonical URLs and
-the sitemap must point at the final destination.
+The source lives in this repository. The production `/work/` directory currently
+lives in `iFan6oy/flash-ai-solutions` and is deployed by Vercel.
+
+Current manual publish flow:
 
 ```bash
 npm run build
-rm -rf ../flash-ai-solutions/work && mkdir ../flash-ai-solutions/work
+rm -rf ../flash-ai-solutions/work
+mkdir ../flash-ai-solutions/work
 cp -r dist/. ../flash-ai-solutions/work/
-cd ../flash-ai-solutions && git add work && git commit -m "site: update /work portfolio" && git push
+cd ../flash-ai-solutions
+git add work
+git commit -m "site: update /work portfolio"
+git push
 ```
 
-The `work` folder must be wiped rather than overwritten, otherwise pages for removed
-projects linger in the deployed output.
+The destination directory must be replaced rather than overlaid so deleted routes do
+not linger. CI verifies that the source portfolio still builds before changes merge.
