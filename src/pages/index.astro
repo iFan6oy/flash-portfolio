@@ -1,5 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import headshot from '../assets/jaylon-malone.jpg';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -190,9 +192,19 @@ const experience = [
         <div class="reveal">
           <p class="section-kicker">About</p>
           <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">I like owning systems end to end.</h2>
-          <div class="mt-6 max-w-2xl space-y-4 leading-relaxed text-ink-soft">
-            <p>I'm an application developer with a computer science background and professional experience shipping internal business systems.</p>
-            <p>My independent work spans APIs, AI workflows, backend systems, cross-device applications, and native TV software. I care about the whole lifecycle: understanding the problem, building the implementation, operating it, and improving it from real usage.</p>
+          <div class="mt-8 flex max-w-2xl flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+            <Image
+              src={headshot}
+              alt="Jaylon Malone"
+              widths={[176, 352, 450]}
+              sizes="(min-width: 640px) 176px, 160px"
+              loading="lazy"
+              class="w-40 shrink-0 rounded-xl border object-cover hairline sm:w-44"
+            />
+            <div class="space-y-4 leading-relaxed text-ink-soft">
+              <p>I'm an application developer with a computer science background and professional experience shipping internal business systems.</p>
+              <p>My independent work spans APIs, AI workflows, backend systems, cross-device applications, and native TV software. I care about the whole lifecycle: understanding the problem, building the implementation, operating it, and improving it from real usage.</p>
+            </div>
           </div>
         </div>
         <div id="contact" class="reveal scroll-mt-24 border-l pl-6 hairline lg:pl-10">

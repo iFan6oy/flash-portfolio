@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import headshot from '../assets/jaylon-malone.jpg';
 
 interface Props {
   title?: string;
@@ -26,6 +27,7 @@ const personLd = {
   '@type': 'Person',
   name: 'Jaylon Malone',
   jobTitle: 'Application Developer and Software Engineer',
+  image: new URL(headshot.src, Astro.site).href,
   url: new URL(base, Astro.site).href,
   email: 'mailto:jaylon@flashaisolutions.org',
   address: {
