@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import FlowDiagram from '../components/FlowDiagram.astro';
 import { CATEGORY } from '../lib/categories';
 
 export async function getStaticPaths() {
@@ -18,13 +19,23 @@ const { project } = Astro.props;
 const d = project.data;
 const c = CATEGORY[d.category];
 const { Content } = await render(project);
+
+/* Only render a section when it actually has content, so a half-filled case
+   study never leaves an empty heading on the page. */
+const hasCaseStudy =
+  !!d.problem || d.constraints.length > 0 || !!d.architecture ||
+  d.decisions.length > 0 || d.hardProblems.length > 0 || d.result.length > 0;
 ---
 
-<Base title={`${d.title}, Jaylon Malone`} description={d.tagline}>
+<Base
+  title={`${d.title}, case study by Jaylon Malone`}
+  description={d.tagline}
+  ogImage={d.cover}
+>
   <Nav />
-  <main style={`--accent:${c.accent}; --accent-rgb:${c.rgb};`}>
+  <main id="main" style={`--accent:${c.accent}; --accent-rgb:${c.rgb};`}>
     <!-- header -->
-    <section class="relative overflow-hidden pt-36 pb-12 md:pt-44">
+    <section class="relative overflow-hidden pt-32 pb-10 md:pt-44">
       <div class="aura left-[-5%] top-[-10%] h-[480px] w-[480px]"></div>
       <div class="relative mx-auto max-w-4xl px-6">
         <a href={`${base}#work`} class="mb-8 inline-flex items-center gap-1.5 text-sm text-ink-mute transition-colors hover:text-ink">
@@ -34,63 +45,68 @@ const { Content } = await render(project);
           <span class="text-xs font-semibold uppercase tracking-[0.16em]" style="color: var(--accent);">{c.label}</span>
           <span class="rounded-full px-2.5 py-0.5 text-[11px]"
                 style="background: var(--color-bg-1); color: var(--accent); border:1px solid color-mix(in oklab, var(--accent) 40%, transparent);">{d.status}</span>
-          {d.private && <span class="text-[11px] uppercase tracking-wider text-ink-faint">Private repo</span>}
+          {d.private && <span class="text-[11px] uppercase tracking-wider text-ink-faint">Private source</span>}
         </div>
-        <h1 class="mt-5 font-display text-4xl font-bold leading-[1.02] text-ink md:text-6xl">{d.title}</h1>
+        <h1 class="mt-5 font-display text-4xl font-bold leading-[1.04] text-ink md:text-6xl">{d.title}</h1>
         <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">{d.tagline}</p>
 
         <div class="mt-8 flex flex-wrap gap-x-10 gap-y-4 border-y py-5 hairline">
-          <div><div class="text-[11px] uppercase tracking-wider text-ink-faint">Role</div><div class="mt-1 text-sm text-ink">{d.role}</div></div>
-          <div><div class="text-[11px] uppercase tracking-wider text-ink-faint">Year</div><div class="mt-1 text-sm text-ink">{d.year}</div></div>
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-ink-faint">Role</div>
+            <div class="mt-1 text-sm text-ink">{d.role}</div>
+          </div>
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-ink-faint">Year</div>
+            <div class="mt-1 text-sm text-ink">{d.year}</div>
+          </div>
           <div class="min-w-[40%] flex-1">
-            <div class="text-[11px] uppercase tracking-wider text-ink-faint">Stack</div>
+            <div class="text-[11px] uppercase tracking-wider text-ink-faint">Technologies</div>
             <div class="mt-1.5 flex flex-wrap gap-1.5">
               {d.stack.map((s) => (
-                <span class="rounded-md px-2 py-0.5 text-[12px] text-ink-soft" style="background: var(--color-bg-1); border:1px solid var(--color-border);">{s}</span>
+                <span class="rounded-md px-2 py-0.5 text-[12px] text-ink-soft"
+                      style="background: var(--color-bg-1); border:1px solid var(--color-border);">{s}</span>
               ))}
             </div>
           </div>
         </div>
 
-        {(d.links.live || d.links.repo) && (
+        {(d.links.live || d.links.repo || d.links.docs) && (
           <div class="mt-6 flex flex-wrap gap-3">
             {d.links.live && (
-              <a href={d.links.live} class="rounded-full px-5 py-2.5 text-sm font-semibold text-black"
-                 style="background: var(--accent);">Live site ↗</a>
+              <a href={d.links.live} rel="noopener"
+                 class="rounded-full px-5 py-2.5 text-sm font-semibold text-black" style="background: var(--accent);">
+                Live site ↗
+              </a>
             )}
             {d.links.repo && (
-              <a href={d.links.repo} class="rounded-full border px-5 py-2.5 text-sm font-medium text-ink hairline"
-                 style="background: var(--color-bg-1);">View repo ↗</a>
+              <a href={d.links.repo} rel="noopener"
+                 class="rounded-full border px-5 py-2.5 text-sm font-medium text-ink hairline" style="background: var(--color-bg-1);">
+                {d.links.repoLabel ?? "View repository"} ↗
+              </a>
+            )}
+            {d.links.docs && (
+              <a href={d.links.docs} rel="noopener"
+                 class="rounded-full border px-5 py-2.5 text-sm font-medium text-ink hairline" style="background: var(--color-bg-1);">
+                Documentation ↗
+              </a>
             )}
           </div>
         )}
       </div>
     </section>
 
-    <!-- cover band -->
-    <div class="mx-auto max-w-4xl px-6">
-      <div class={`relative overflow-hidden rounded-2xl ${d.cover ? '' : 'h-48 md:h-64'}`}
-           style="background:
-             radial-gradient(110% 130% at 15% 10%, color-mix(in oklab, var(--accent) 38%, transparent), transparent 55%),
-             radial-gradient(120% 120% at 90% 100%, color-mix(in oklab, var(--accent) 20%, transparent), transparent 55%),
-             linear-gradient(155deg, var(--color-bg-2), var(--color-bg)); border:1px solid var(--color-border);">
-        {d.cover ? (
-          <img src={base + d.cover.replace(/^\//, '')} alt={`${d.title} screenshot`} loading="lazy" decoding="async"
+    {d.cover && (
+      <div class="mx-auto max-w-4xl px-6">
+        <div class="overflow-hidden rounded-2xl border hairline" style="background: var(--color-bg-1);">
+          <img src={base + d.cover.replace(/^\//, '')} alt={`${d.title} interface`} loading="lazy" decoding="async"
                class="block w-full" />
-        ) : (
-          <>
-            <div class="absolute inset-0 opacity-[0.07]"
-                 style="background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px); background-size: 40px 40px;"></div>
-            <span class="absolute bottom-5 right-6 text-xs text-ink-faint">Screenshots coming soon</span>
-          </>
-        )}
+        </div>
       </div>
-    </div>
+    )}
 
-    <!-- highlights + body -->
     <article class="mx-auto max-w-4xl px-6 py-12">
       {d.highlights.length > 0 && (
-        <ul class="mb-10 grid gap-3 sm:grid-cols-2">
+        <ul class="mb-12 grid list-none gap-3 p-0 sm:grid-cols-2">
           {d.highlights.map((h) => (
             <li class="flex gap-3 rounded-xl border p-4 hairline" style="background: var(--color-bg-1);">
               <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style="background: var(--accent);"></span>
@@ -99,21 +115,129 @@ const { Content } = await render(project);
           ))}
         </ul>
       )}
-      <div class="prose-flash">
+
+      {hasCaseStudy && (
+        <div class="space-y-12">
+          {d.problem && (
+            <section>
+              <h2 class="cs-h">The problem</h2>
+              <p class="cs-p">{d.problem}</p>
+            </section>
+          )}
+
+          {d.constraints.length > 0 && (
+            <section>
+              <h2 class="cs-h">Constraints</h2>
+              <ul class="mt-4 list-none space-y-2.5 p-0">
+                {d.constraints.map((x) => (
+                  <li class="flex gap-3">
+                    <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style="background: var(--accent);"></span>
+                    <span class="leading-relaxed text-ink-soft">{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {(d.architecture || d.diagram) && (
+            <section>
+              <h2 class="cs-h">Architecture</h2>
+              {d.architecture && <p class="cs-p">{d.architecture}</p>}
+              {d.diagram && <FlowDiagram id={d.diagram} />}
+            </section>
+          )}
+
+          {d.decisions.length > 0 && (
+            <section>
+              <h2 class="cs-h">Engineering decisions</h2>
+              <div class="mt-5 space-y-4">
+                {d.decisions.map((x) => (
+                  <div class="rounded-xl border p-5 hairline" style="background: var(--color-bg-1);">
+                    <h3 class="font-display text-[17px] font-semibold text-ink">{x.title}</h3>
+                    <p class="mt-2 leading-relaxed text-ink-soft">{x.body}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {d.hardProblems.length > 0 && (
+            <section>
+              <h2 class="cs-h">Hard problems</h2>
+              <div class="mt-5 space-y-4">
+                {d.hardProblems.map((x) => (
+                  <div class="rounded-xl border-l-2 py-1 pl-5" style="border-color: var(--accent);">
+                    <h3 class="font-display text-[17px] font-semibold text-ink">{x.title}</h3>
+                    <p class="mt-2 leading-relaxed text-ink-soft">{x.body}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {d.result.length > 0 && (
+            <section>
+              <h2 class="cs-h">Where it stands</h2>
+              <ul class="mt-4 list-none space-y-2.5 p-0">
+                {d.result.map((x) => (
+                  <li class="flex gap-3">
+                    <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full" style="background: var(--accent);"></span>
+                    <span class="leading-relaxed text-ink-soft">{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+      )}
+
+      <div class={`prose-flash ${hasCaseStudy ? 'mt-14 border-t pt-10 hairline' : ''}`}>
         <Content />
       </div>
+
+      {d.demonstrates.length > 0 && (
+        <section class="mt-14 rounded-2xl border p-6 hairline md:p-8" style="background: var(--color-bg-1);">
+          <h2 class="font-display text-[15px] font-semibold uppercase tracking-[0.14em]" style="color: var(--accent);">
+            What this demonstrates
+          </h2>
+          <ul class="mt-4 grid list-none gap-2.5 p-0 sm:grid-cols-2">
+            {d.demonstrates.map((x) => (
+              <li class="flex gap-2.5 text-sm text-ink-soft">
+                <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full" style="background: var(--accent);"></span>{x}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <a href={`${base}#work`} class="mt-12 inline-flex items-center gap-1.5 text-sm text-ink-mute transition-colors hover:text-ink">
+        ← All work
+      </a>
     </article>
   </main>
   <Footer />
 </Base>
 
 <style is:global>
+  .cs-h {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .cs-p {
+    margin-top: 1rem;
+    color: var(--color-ink-soft);
+    line-height: 1.75;
+  }
+
   .prose-flash { color: var(--color-ink-soft); line-height: 1.75; }
   .prose-flash > * + * { margin-top: 1.1rem; }
   .prose-flash h2 {
     font-family: var(--font-display);
     color: var(--color-ink);
-    font-size: 1.6rem;
+    font-size: 1.55rem;
     font-weight: 700;
     margin-top: 2.4rem;
     letter-spacing: -0.02em;

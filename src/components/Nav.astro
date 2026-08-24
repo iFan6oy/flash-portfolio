@@ -2,22 +2,22 @@
 const base = import.meta.env.BASE_URL; // '/work/'
 const links = [
   { href: `${base}#work`, label: 'Work' },
-  { href: `${base}#business`, label: 'Business' },
-  { href: `${base}#ai`, label: 'AI' },
-  { href: `${base}#about`, label: 'About' },
+  { href: `${base}#areas`, label: 'Engineering' },
+  { href: `${base}#open-source`, label: 'Open source' },
+  { href: `${base}#experience`, label: 'Experience' },
 ];
 ---
 
 <header
-  class="fixed top-0 inset-x-0 z-50 transition-colors"
-  style="backdrop-filter: blur(14px); background: color-mix(in oklab, var(--color-bg) 72%, transparent); border-bottom: 1px solid var(--color-border);"
+  class="fixed top-0 inset-x-0 z-50"
+  style="backdrop-filter: blur(14px); background: color-mix(in oklab, var(--color-bg) 78%, transparent); border-bottom: 1px solid var(--color-border);"
 >
-  <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-    <a href={base} class="group flex items-center gap-2.5">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4" aria-label="Primary">
+    <a href={base} class="flex items-center gap-2.5 rounded-lg">
       <span
         class="grid h-8 w-8 place-items-center rounded-lg font-display text-sm font-bold text-black"
         style="background: linear-gradient(135deg, var(--color-brand), #7c5cfa);"
-        >JM</span
+        aria-hidden="true">JM</span
       >
       <span class="font-display text-[15px] font-semibold tracking-tight text-ink">
         Jaylon Malone
@@ -25,16 +25,11 @@ const links = [
     </a>
 
     <div class="hidden items-center gap-1 md:flex">
-      {
-        links.map((l) => (
-          <a
-            href={l.href}
-            class="rounded-full px-4 py-2 text-sm text-ink-soft transition-colors hover:text-ink"
-          >
-            {l.label}
-          </a>
-        ))
-      }
+      {links.map((l) => (
+        <a href={l.href} class="rounded-full px-4 py-2 text-sm text-ink-soft transition-colors hover:text-ink">
+          {l.label}
+        </a>
+      ))}
       <a
         href={`${base}#contact`}
         class="ml-2 rounded-full px-4 py-2 text-sm font-medium text-black transition-transform hover:scale-[1.03]"
@@ -44,12 +39,53 @@ const links = [
       </a>
     </div>
 
-    <a
-      href={`${base}#contact`}
-      class="rounded-full px-4 py-2 text-sm font-medium text-black md:hidden"
-      style="background: var(--color-brand);"
+    <!-- mobile: a real disclosure menu, not just a contact button -->
+    <button
+      id="nav-toggle"
+      type="button"
+      class="flex h-11 w-11 items-center justify-center rounded-lg border text-ink hairline md:hidden"
+      aria-expanded="false"
+      aria-controls="nav-mobile"
+      aria-label="Open menu"
+      style="background: var(--color-bg-1);"
     >
-      Contact
-    </a>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+    </button>
   </nav>
+
+  <div id="nav-mobile" hidden class="border-t px-6 pb-5 pt-3 md:hidden hairline" style="background: var(--color-bg);">
+    <ul class="flex list-none flex-col gap-1 p-0">
+      {links.map((l) => (
+        <li>
+          <a href={l.href} class="block rounded-lg px-3 py-3 text-[15px] text-ink-soft hover:text-ink">{l.label}</a>
+        </li>
+      ))}
+      <li class="pt-2">
+        <a href={`${base}#contact`} class="block rounded-full px-4 py-3 text-center text-sm font-semibold text-black"
+           style="background: var(--color-brand);">Get in touch</a>
+      </li>
+    </ul>
+  </div>
 </header>
+
+<script>
+  const btn = document.getElementById('nav-toggle');
+  const panel = document.getElementById('nav-mobile');
+  if (btn && panel) {
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+    btn.addEventListener('click', () => setOpen(panel.hidden));
+    // any in-page jump should close the sheet behind it
+    panel.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); }
+    });
+  }
+</script>

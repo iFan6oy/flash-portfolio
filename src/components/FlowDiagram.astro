@@ -1,0 +1,50 @@
+---
+import { DIAGRAMS } from '../lib/diagrams';
+
+interface Props { id: string; }
+const { id } = Astro.props;
+const d = DIAGRAMS[id];
+---
+
+{d && (
+  <figure class="my-10">
+    <!--
+      Rendered as a semantic list, not an image: it reflows to one column on a
+      phone, inherits --accent from the page, and reads correctly aloud.
+    -->
+    <div class="overflow-x-auto rounded-2xl border p-5 hairline md:p-7"
+         style="background: linear-gradient(160deg, var(--color-bg-1), var(--color-bg));">
+      <ol class="flex min-w-[280px] list-none flex-col gap-0 p-0">
+        {d.layers.map((layer, i) => (
+          <li class="list-none">
+            <div class="flex flex-col gap-2 md:flex-row md:items-center md:gap-5">
+              {layer.rail && (
+                <span class="shrink-0 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint md:w-28">
+                  {layer.rail}
+                </span>
+              )}
+              <div class="flex flex-1 flex-wrap gap-2.5">
+                {layer.nodes.map((n) => (
+                  <div class="flex-1 basis-[150px] rounded-xl border px-3.5 py-2.5"
+                       style="background: var(--color-bg-2); border-color: color-mix(in oklab, var(--accent) 26%, var(--color-border));">
+                    <div class="text-[13px] font-medium leading-snug text-ink">{n.label}</div>
+                    {n.note && (
+                      <div class="mt-0.5 font-mono text-[10.5px] leading-snug text-ink-mute">{n.note}</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+            {i < d.layers.length - 1 && (
+              <div class="flex md:pl-28" aria-hidden="true">
+                <span class="my-1.5 ml-3 block h-5 w-px md:ml-5"
+                      style="background: linear-gradient(to bottom, color-mix(in oklab, var(--accent) 55%, transparent), transparent);"></span>
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+    <figcaption class="mt-3 text-[13px] leading-relaxed text-ink-mute">{d.caption}</figcaption>
+  </figure>
+)}
