@@ -1,71 +1,39 @@
 ---
-const base = import.meta.env.BASE_URL; // '/work/'
+const base = import.meta.env.BASE_URL;
 const links = [
   { href: `${base}#work`, label: 'Work' },
-  { href: `${base}#areas`, label: 'Engineering' },
-  { href: `${base}#open-source`, label: 'Open source' },
   { href: `${base}#experience`, label: 'Experience' },
+  { href: `${base}#open-source`, label: 'Open source' },
+  { href: `${base}#about`, label: 'About' },
 ];
 ---
 
-<header
-  class="fixed top-0 inset-x-0 z-50"
-  style="backdrop-filter: blur(14px); background: color-mix(in oklab, var(--color-bg) 78%, transparent); border-bottom: 1px solid var(--color-border);"
->
-  <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4" aria-label="Primary">
-    <a href={base} class="flex items-center gap-2.5 rounded-lg">
-      <span
-        class="grid h-8 w-8 place-items-center rounded-lg font-display text-sm font-bold text-black"
-        style="background: linear-gradient(135deg, var(--color-brand), #7c5cfa);"
-        aria-hidden="true">JM</span
-      >
-      <span class="font-display text-[15px] font-semibold tracking-tight text-ink">
-        Jaylon Malone
-      </span>
-    </a>
+<header class="fixed inset-x-0 top-0 z-50 border-b hairline" style="background: color-mix(in oklab, var(--color-bg) 94%, transparent); backdrop-filter: blur(10px);">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4" aria-label="Primary">
+    <a href={base} class="text-[15px] font-semibold tracking-tight text-ink no-underline">Jaylon Malone</a>
 
-    <div class="hidden items-center gap-1 md:flex">
-      {links.map((l) => (
-        <a href={l.href} class="rounded-full px-4 py-2 text-sm text-ink-soft transition-colors hover:text-ink">
-          {l.label}
-        </a>
+    <div class="hidden items-center gap-6 md:flex">
+      {links.map((link) => (
+        <a href={link.href} class="text-sm text-ink-soft no-underline transition-colors hover:text-ink">{link.label}</a>
       ))}
-      <a
-        href={`${base}#contact`}
-        class="ml-2 rounded-full px-4 py-2 text-sm font-medium text-black transition-transform hover:scale-[1.03]"
-        style="background: linear-gradient(135deg, var(--color-brand), var(--color-brand-deep));"
-      >
-        Get in touch
-      </a>
+      <a href={`${base}JaylonMalone_Resume.pdf`} class="text-sm font-medium text-ink no-underline">Resume</a>
+      <a href={`${base}#contact`} class="border-l pl-6 text-sm font-medium text-brand no-underline hairline">Contact</a>
     </div>
 
-    <!-- mobile: a real disclosure menu, not just a contact button -->
-    <button
-      id="nav-toggle"
-      type="button"
-      class="flex h-11 w-11 items-center justify-center rounded-lg border text-ink hairline md:hidden"
-      aria-expanded="false"
-      aria-controls="nav-mobile"
-      aria-label="Open menu"
-      style="background: var(--color-bg-1);"
-    >
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-        <path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    <button id="nav-toggle" type="button" class="flex h-11 w-11 items-center justify-center border text-ink md:hidden hairline" aria-expanded="false" aria-controls="nav-mobile" aria-label="Open menu">
+      <svg width="19" height="19" viewBox="0 0 19 19" fill="none" aria-hidden="true">
+        <path d="M2.5 5h14M2.5 9.5h14M2.5 14h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
       </svg>
     </button>
   </nav>
 
-  <div id="nav-mobile" hidden class="border-t px-6 pb-5 pt-3 md:hidden hairline" style="background: var(--color-bg);">
-    <ul class="flex list-none flex-col gap-1 p-0">
-      {links.map((l) => (
-        <li>
-          <a href={l.href} class="block rounded-lg px-3 py-3 text-[15px] text-ink-soft hover:text-ink">{l.label}</a>
-        </li>
+  <div id="nav-mobile" hidden class="border-t px-6 py-4 md:hidden hairline" style="background: var(--color-bg);">
+    <ul class="m-0 flex list-none flex-col p-0">
+      {links.map((link) => (
+        <li><a href={link.href} class="block py-3 text-[15px] text-ink-soft no-underline">{link.label}</a></li>
       ))}
-      <li class="pt-2">
-        <a href={`${base}#contact`} class="block rounded-full px-4 py-3 text-center text-sm font-semibold text-black"
-           style="background: var(--color-brand);">Get in touch</a>
-      </li>
+      <li><a href={`${base}JaylonMalone_Resume.pdf`} class="block py-3 text-[15px] text-ink no-underline">Resume</a></li>
+      <li><a href={`${base}#contact`} class="block py-3 text-[15px] font-medium text-brand no-underline">Contact</a></li>
     </ul>
   </div>
 </header>
@@ -80,12 +48,14 @@ const links = [
       btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     };
     btn.addEventListener('click', () => setOpen(panel.hidden));
-    // any in-page jump should close the sheet behind it
-    panel.addEventListener('click', (e) => {
-      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    panel.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
     });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !panel.hidden) { setOpen(false); btn.focus(); }
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !panel.hidden) {
+        setOpen(false);
+        btn.focus();
+      }
     });
   }
 </script>
