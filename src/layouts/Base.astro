@@ -4,15 +4,58 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  /** project cover path, e.g. /covers/x.png — falls back to the site OG card */
+  ogImage?: string;
 }
 
 const {
-  title = 'Jaylon Malone · Software Developer & AI Solutions Architect',
-  description = 'Jaylon Malone builds AI-powered products, autonomous agents, enterprise workflow systems, and full-stack apps. Mobile, AL. Founder of Flash AI Solutions.',
+  title = 'Jaylon Malone · Application Developer and Systems Builder',
+  description =
+    'Jaylon Malone builds production software across AI pipelines, APIs, data systems, automation, and cross-device applications. Mobile, Alabama.',
+  ogImage,
 } = Astro.props;
 
-const ogImage = new URL(`${import.meta.env.BASE_URL}og.png`, Astro.site).href;
+const base = import.meta.env.BASE_URL;
+const shareCard = new URL(
+  ogImage ? base + ogImage.replace(/^\//, '') : `${base}og.png`,
+  Astro.site
+).href;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+/* Person schema so search engines can resolve who this is and what he does. */
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Jaylon Malone',
+  jobTitle: 'Application Developer and Systems Builder',
+  url: new URL(base, Astro.site).href,
+  email: 'mailto:jaylon@flashaisolutions.org',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Mobile',
+    addressRegion: 'AL',
+    addressCountry: 'US',
+  },
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'University of South Alabama',
+  },
+  sameAs: [
+    'https://github.com/iFan6oy',
+    'https://linkedin.com/in/jaylon-malone',
+  ],
+  knowsAbout: [
+    'TypeScript',
+    'Python',
+    'Kotlin',
+    'Model Context Protocol',
+    'API design',
+    'Distributed systems',
+    'React Native',
+    'Jetpack Compose',
+    'Power Platform',
+  ],
+};
 ---
 
 <!doctype html>
@@ -20,24 +63,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content="Jaylon Malone" />
+    <link rel="canonical" href={canonical} />
+
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Jaylon Malone" />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Jaylon Malone, Software Developer and AI Solutions Architect" />
+    <meta property="og:image" content={shareCard} />
+    <meta property="og:image:alt" content="Jaylon Malone, application developer and systems builder" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={shareCard} />
     <meta name="theme-color" content="#07070c" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -47,6 +91,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       rel="stylesheet"
     />
 
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
+
     <!-- no-JS safety: never hide content from crawlers or scripts-off users -->
     <noscript>
       <style>
@@ -54,16 +100,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       </style>
     </noscript>
 
-    <!-- Vercel Web Analytics: activates once Analytics is enabled on the Vercel project -->
+    <!-- Vercel Web Analytics: activates once Analytics is enabled on the project -->
     <script defer src="/_vercel/insights/script.js"></script>
   </head>
   <body class="grain min-h-screen antialiased">
+    <a href="#main" class="skip-link">Skip to content</a>
     <slot />
 
     <!-- reveal-on-scroll, self-cleaning observer (perf-aware per design rules) -->
     <script>
       const els = document.querySelectorAll('.reveal');
-      if ('IntersectionObserver' in window && els.length) {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduced && 'IntersectionObserver' in window && els.length) {
         const io = new IntersectionObserver(
           (entries) => {
             for (const e of entries) {

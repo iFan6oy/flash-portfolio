@@ -16,8 +16,8 @@
   /* type */
   --color-ink: #f4f4f8;
   --color-ink-soft: #b7b9c8;
-  --color-ink-mute: #767889;
-  --color-ink-faint: #4c4e5e;
+  --color-ink-mute: #8b8d9f;
+  --color-ink-faint: #767889;
 
   /* brand */
   --color-brand: #00d4ff;
@@ -140,5 +140,40 @@
   .reveal.in {
     opacity: 1;
     transform: none;
+  }
+}
+
+
+/* ---- accessibility: visible focus, skip link, motion opt-out ---- */
+@layer base {
+  /* Never remove the focus ring; make it match the page accent instead. */
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    padding: 0.75rem 1.15rem;
+    background: var(--color-brand);
+    color: #000;
+    font-weight: 600;
+    border-radius: 0 0 8px 0;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://flashaisolutions.org',
+  site: 'https://www.flashaisolutions.org',
   base: '/work',
   trailingSlash: 'always',
   integrations: [sitemap()],
