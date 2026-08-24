@@ -1,46 +1,50 @@
 ---
-title: MCPSS Travel Reimbursement Suite
-tagline: A district-wide reimbursement and voucher automation platform, 92 schools, 7,200 staff, in production for three years.
+title: MCPSS Travel and Voucher Suite
+tagline: The district-wide reimbursement platform I built and supported as an application developer, on Power Apps, Power Automate, and SharePoint.
 category: power
-group: business
-role: Application Developer (MCPSS)
-year: 2023 to 2026
+group: engineering
+role: Application Developer, Mobile County Public Schools
+year: 2024 to 2026
 status: Shipped
 featured: false
-order: 10
+order: 19
 private: false
 stack:
-  - Power Apps (Canvas + Model-Driven)
+  - Power Apps
   - Power Automate
   - SharePoint
   - Dataverse
   - Power BI
-  - OData
+  - SQL / OData
 highlights:
-  - Multi-stage estimate → GL → audit → approval workflows with escalation logic
-  - Role-based security scoped by cost center and Office 365 directory attributes
-  - HTML-to-PDF archival, plus discipline-referral and asset-lifecycle systems
-links:
-  caseStudy: /work/mcpss-travel-suite
+  - Consolidated three separate applications into one pipeline covering estimate through accounts payable
+  - Multi-level approval routing driven by approver level, with escalation and email notification
+  - Role-based security scoped by cost center and directory attributes
+  - Automated document generation for archival and compliance, plus reporting dashboards over SharePoint and SQL
+links: {}
+demonstrates:
+  - Shipping and supporting production software in a professional organization
+  - Business process automation and approval workflow design
+  - Working within enterprise platform and governance constraints
 ---
 
-For three years I was the Application Developer behind Mobile County Public Schools'
-Travel Reimbursement & Voucher Automation Suite, a production Power Platform system
-serving 92 schools and 7,200 staff.
+This is the professional work underneath everything else on this site. For close to
+two years I was the application developer responsible for Mobile County Public
+Schools' travel reimbursement and voucher system, built on the Microsoft Power
+Platform with a SharePoint data layer.
 
-## Scope
+The change I am most proud of is consolidation. The process was spread across three
+separate applications, which meant staff had to know which one they were supposed to
+be in at each stage. Unifying it into a single application with stage-gated
+navigation turned it into one pipeline, where what you can see and do is determined
+by where the request actually is rather than by which app you happened to open.
 
-- Architected multi-stage workflows: estimate submission, GL processing, audit
-  tracking, and final approval.
-- Designed a scalable SharePoint schema for financial tracking, mileage logic, and
-  correction auditing.
-- Built multi-level approval routing with dynamic email notifications and escalation.
-- Implemented role-based security scoped by cost center and O365 directory attributes.
-- Automated HTML-to-PDF generation for archival and compliance.
-- Also delivered a Student Discipline Referral system, asset-lifecycle tracking, and
-  Power BI dashboards over SharePoint + SQL.
+Alongside it I built a student discipline referral system with filtering tied to
+directory attributes, asset lifecycle tracking for district equipment, and Power BI
+reporting over SharePoint and SQL sources.
 
-This is the real enterprise foundation under everything else, and the direct
-ancestor of TRA.
+The part that does not show up in a stack list is the operational experience. I
+supported this while people used it to get their money back, which is where you learn
+what an approval workflow actually has to handle.
 
-> Presented as a sanitized case study; no district data is shown.
+> Presented as a sanitized case study. No district data is shown.

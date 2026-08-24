@@ -1,40 +1,44 @@
 ---
 title: OpenClaw
-tagline: A 24/7 autonomous AI agent that thinks every 30 minutes, plans its own tool calls, and gates risky actions behind human approval.
+tagline: A long-running autonomous agent, and the grounding mechanism I had to build after it started reporting work it had never done.
 cover: /covers/openclaw.png
 category: ai
-group: featured
+group: engineering
 role: Solo Developer
-year: 2026 to Present
+year: 2026 to present
 status: Active
-featured: true
-order: 3
+featured: false
+order: 13
 private: false
 stack:
   - Node.js
   - Anthropic API
   - Telegram Bot API
-  - PM2 / Hetzner
+  - PM2 / Linux
 highlights:
-  - Self-directed think loop reads its own memory, plans, and executes safe tool calls
-  - Classifies every action safe vs. risky; risky ones queue for Telegram approval
-  - Citation-grounding mechanism prevents hallucinated "wins"
+  - Think loop reads persistent memory, plans tool calls, and executes on a schedule without supervision
+  - Actions are classified safe or risky; risky ones queue for human approval rather than running
+  - Every claim the agent posts must cite a specific line in the event log or it is rejected
+  - Runs as separate supervised processes so a failure in one does not take the others down
 links:
   repo: https://github.com/iFan6oy/openclaw
-  caseStudy: /work/openclaw
+demonstrates:
+  - Autonomous agent design with human-in-the-loop boundaries
+  - Diagnosing and containing model failure modes in production
+  - Grounding agent output in verifiable evidence
 ---
 
-OpenClaw is an autonomous agent that runs unattended on a VPS. On every cycle it
-reads its own persistent memory, calls Claude to plan, classifies the planned
-actions as safe or risky, executes the safe ones, and queues the risky ones for
-approval over Telegram.
+The interesting part of this project is the failure. Running in a broad, open-ended
+mode, the agent began reporting progress that had not happened. Not hallucinated
+facts about the world, which is the failure everyone expects, but confident summaries
+of its own work that were not true.
 
-## The hard lesson, encoded
+The fix was mechanical rather than a better prompt. The agent now cannot post an
+observation unless it cites a specific line in the event log, and the citation is
+validated before the post is accepted. No citation, no post. It was also narrowed to
+a much tighter operating scope, on the principle that an unreliable agent with a wide
+mandate is worse than a reliable one with a narrow one.
 
-An earlier "architect mode" hallucinated progress. It claimed wins that never
-happened. The current design fixes that with a **grounding rule**: no observation
-gets posted without a citation back to a real event log line. That single constraint
-is what makes an autonomous agent trustworthy enough to leave running.
-
-This is the cleanest public window into how I think about agentic systems: safety
-classification, human-in-the-loop escalation, and grounding over vibes.
+I keep this in the portfolio deliberately. Anyone can show an agent demo that worked.
+Being able to describe how one failed, why the failure was hard to see, and what
+structural change contained it is a more useful thing to know about an engineer.

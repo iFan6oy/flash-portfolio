@@ -1,28 +1,34 @@
 ---
 title: Launcher-Man
-tagline: "A polished 2D Unity platformer with real game-feel engineering: coyote time, jump buffering, dash, wall-jump."
-category: lab
-group: experiments
+tagline: A finished 2D Unity platformer in C#, where the engineering is in how the movement feels rather than in the level.
+category: mobile
+group: engineering
 role: Solo Developer
 year: 2026
 status: Shipped
 featured: false
-order: 32
+order: 24
 private: false
 stack:
   - C#
-  - Unity 6.3 LTS
+  - Unity
   - HLSL
 highlights:
-  - "Tight movement: dash, double-jump, wall-jump, variable jump height"
-  - "Game-feel details: coyote time, jump buffering, dash cooldown"
-  - Complete, documented, playable cave run
+  - Coyote time, jump buffering, and variable jump height, which are the details that separate responsive movement from stiff movement
+  - Dash and wall-jump with cooldown tuning
+  - Complete and playable rather than an abandoned prototype
 links:
   repo: https://github.com/iFan6oy/Launcher-Man
-  caseStudy: /work/launcher-man
+demonstrates:
+  - C# and a compiled game engine outside my usual stack
+  - Interaction engineering measured in frames
 ---
 
-A finished 2D Unity platformer where you dash and wall-jump through a cave to collect
-seven gems. The interesting part isn't the level. It's the movement engineering:
-coyote time, jump buffering, variable jump height, and dash cooldown tuned for feel.
-Shows range beyond web and a feel for low-level interaction design.
+A small, finished platformer. It is on this site for two honest reasons: it is my C#
+work, and it is the clearest example of tuning interaction at the frame level.
+
+The details that matter are invisible when they work. Coyote time lets a jump register
+for a few frames after you leave a ledge, jump buffering accepts the input slightly
+before you land, and variable jump height ties the arc to how long the button is held.
+Without them the controls are technically correct and feel broken, which is a lesson
+that transfers well beyond games.
