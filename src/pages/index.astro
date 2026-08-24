@@ -3,58 +3,39 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import { AREAS, GROUPS } from '../lib/categories';
+import FlowDiagram from '../components/FlowDiagram.astro';
 import { OSS } from '../lib/openSource';
 
-const base = import.meta.env.BASE_URL; // '/work/'
-const asset = (p: string) => base + p.replace(/^\//, '');
-const all = await getCollection('projects');
+const base = import.meta.env.BASE_URL;
+const asset = (path: string) => base + path.replace(/^\//, '');
+const projects = await getCollection('projects');
 const byOrder = (a: any, b: any) => a.data.order - b.data.order;
 
-const selected = all.filter((p) => p.data.group === 'selected').sort(byOrder);
-const lead = selected[0];
-const restSelected = selected.slice(1);
-const engineering = all.filter((p) => p.data.group === 'engineering').sort(byOrder);
-
-/* Proof numbers. Every one of these is countable from the work itself. */
-const proof = [
-  { n: '4', l: 'client runtimes sharing one session' },
-  { n: '12', l: 'MCP tools live for AI agents' },
-  { n: '11', l: 'open-source repositories published' },
-  { n: '6', l: 'languages in production use' },
-];
-
-const skills = [
-  { label: 'Languages', items: ['TypeScript', 'Python', 'JavaScript', 'Kotlin', 'C#', 'SQL'] },
-  { label: 'Application', items: ['React', 'React Native', 'Next.js', 'Jetpack Compose', 'Astro', 'Preact', 'SvelteKit', 'Electron', 'Power Apps'] },
-  { label: 'Backend & data', items: ['Node.js', 'Hono', 'Express', 'REST / OpenAPI', 'PostgreSQL', 'SQLite', 'Prisma', 'Drizzle', 'JSON Schema', 'Zod'] },
-  { label: 'AI', items: ['LLM pipelines', 'Model Context Protocol', 'Structured outputs', 'Tool calling', 'Model routing', 'Grounding', 'Evaluation harnesses'] },
-  { label: 'Systems', items: ['Linux', 'PM2', 'Caddy', 'VPS deployment', 'GitHub Actions', 'Service workers', 'ADB / Fire TV', 'Tizen'] },
-  { label: 'Microsoft', items: ['Power Automate', 'SharePoint', 'Dataverse', 'Power BI', 'OData'] },
-];
+const flashpoint = projects.find((p) => p.id === 'flashpoint');
+const flashProps = projects.find((p) => p.id === 'flash-props');
+const chalkline = projects.find((p) => p.id === 'chalkline');
+const sessionBrain = projects.find((p) => p.id === 'session-brain');
+const primaryIds = new Set(['flashpoint', 'flash-props', 'chalkline', 'session-brain']);
+const more = projects.filter((p) => !primaryIds.has(p.id)).sort(byOrder);
 
 const experience = [
   {
-    role: 'Founder and Engineer',
+    role: 'Founder & Engineer',
     org: 'Flash AI Solutions',
-    when: 'Jan 2026 to present',
-    body:
-      'Full-time on my own products and client work. Shipped a commercial props API with an MCP interface, a teaching-materials product, a cross-device media platform, and eleven open-source repositories.',
+    when: '2026 to present',
+    body: 'Building and shipping independent software products, APIs, automation systems, and client work. Current systems include Flashpoint, Flash Props, Chalkline, and a growing set of production-derived open-source tools.',
   },
   {
     role: 'Application Developer',
     org: 'Mobile County Public Schools',
-    when: 'Apr 2024 to Jan 2026',
-    body:
-      'Owned the district travel reimbursement and voucher platform on Power Apps, Power Automate, and SharePoint. Consolidated three applications into one approval pipeline, and built discipline referral, asset tracking, and Power BI reporting alongside it.',
+    when: '2024 to 2026',
+    body: 'Owned production workflow software across Power Apps, Power Automate, SharePoint, and Power BI, including the district travel reimbursement and voucher platform and additional operational systems.',
   },
   {
     role: 'Software Development Intern',
     org: 'Keesler Federal Credit Union',
-    when: 'May 2022 to Mar 2023',
-    body:
-      'Process automation with UiPath and the Power Platform, SQL reporting, Power BI dashboards, and PowerShell scripting for internal support tooling.',
+    when: '2022 to 2023',
+    body: 'Built process automation, SQL reporting, Power BI dashboards, and PowerShell tooling for internal teams.',
   },
 ];
 ---
@@ -62,316 +43,167 @@ const experience = [
 <Base>
   <Nav />
   <main id="main">
-    <!-- ===================== HERO ===================== -->
-    <section class="relative overflow-hidden pt-36 pb-20 md:pt-48 md:pb-28">
-      <div class="aura left-[-10%] top-[-5%] h-[520px] w-[520px]" style="--accent:#00d4ff;"></div>
-      <div class="aura right-[-8%] top-[18%] h-[460px] w-[460px]" style="--accent:#7c5cfa; opacity:.32;"></div>
-      <div class="aura left-[32%] bottom-[-18%] h-[420px] w-[420px]" style="--accent:#10b981; opacity:.2;"></div>
+    <section class="mx-auto max-w-6xl px-6 pb-20 pt-36 md:pb-28 md:pt-44">
+      <p class="section-kicker">Jaylon Malone</p>
+      <h1 class="mt-5 max-w-5xl text-[clamp(2.7rem,7vw,5.5rem)] font-semibold leading-[0.98] text-ink">
+        Application Developer & Software Engineer
+      </h1>
+      <p class="mt-7 max-w-3xl text-lg leading-relaxed text-ink-soft md:text-xl">
+        I build production applications, APIs, automation, AI systems, and cross-device software. My work ranges from enterprise workflow systems to native TV clients and agent-facing data products.
+      </p>
+      <div class="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+        <a class="rule-link" href="#work">Selected work</a>
+        <a class="text-ink-soft hover:text-ink" href={asset('JaylonMalone_Resume.pdf')}>Resume</a>
+        <a class="text-ink-soft hover:text-ink" href="https://github.com/iFan6oy">GitHub</a>
+        <a class="text-ink-soft hover:text-ink" href="mailto:jaylon@flashaisolutions.org">Email</a>
+      </div>
+      <p class="mt-16 border-t pt-5 text-sm text-ink-mute hairline">
+        Professional experience includes application development for Mobile County Public Schools and software development work at Keesler Federal Credit Union.
+      </p>
+    </section>
 
-      <div class="relative mx-auto max-w-7xl px-6">
-        <p class="mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs tracking-wide text-ink-soft hairline"
-           style="background: var(--color-bg-1);">
-          <span class="h-1.5 w-1.5 rounded-full" style="background:#22c55e; box-shadow:0 0 10px #22c55e;"></span>
-          Mobile, AL · Open to engineering roles and contract work
-        </p>
-
-        <h1 class="max-w-5xl font-display text-[clamp(2.5rem,6.6vw,5.2rem)] font-bold leading-[1.0] text-ink">
-          Application developer and
-          <span class="text-gradient">systems builder</span>.
-        </h1>
-
-        <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-soft">
-          I ship production software across AI pipelines, APIs, data systems, automation,
-          and cross-device applications. Most recently: a commercial props API where the
-          REST surface and an MCP server for AI agents are generated from the same schemas,
-          and a media platform whose four clients, on desktop, iOS, Fire TV, and Samsung
-          Tizen, share one session through a central authority.
-        </p>
-
-        <div class="mt-10 flex flex-wrap items-center gap-4">
-          <a href="#work"
-             class="rounded-full px-6 py-3 text-sm font-semibold text-black transition-transform hover:scale-[1.03]"
-             style="background: linear-gradient(135deg, var(--color-brand), var(--color-brand-deep)); box-shadow: 0 12px 40px -8px rgba(0,212,255,.4);">
-            See the systems
-          </a>
-          <a href={asset('JaylonMalone_Resume.pdf')}
-             class="rounded-full border px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-[var(--color-border-bright)] hairline"
-             style="background: var(--color-bg-1);">
-            Resume (PDF)
-          </a>
-          <a href="https://github.com/iFan6oy"
-             class="rounded-full border px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-[var(--color-border-bright)] hairline"
-             style="background: var(--color-bg-1);">
-            GitHub
-          </a>
+    <section id="work" class="scroll-mt-24 border-t hairline">
+      <div class="mx-auto max-w-6xl px-6 py-20 md:py-24">
+        <div class="mb-12 max-w-2xl">
+          <p class="section-kicker">Selected work</p>
+          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Systems worth inspecting</h2>
+          <p class="mt-4 leading-relaxed text-ink-soft">A small set of projects that best show how I design, build, and operate software end to end.</p>
         </div>
 
-        <div class="mt-16 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
-          {proof.map((s) => (
-            <div>
-              <div class="font-display text-3xl font-bold text-ink">{s.n}</div>
-              <div class="mt-1 text-xs leading-snug text-ink-mute">{s.l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== SELECTED SYSTEMS ===================== -->
-    <section id="work" class="relative mx-auto max-w-7xl scroll-mt-20 px-6 py-16">
-      <div class="reveal mb-10 max-w-2xl">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Selected systems</p>
-        <h2 class="mt-3 font-display text-4xl font-bold text-ink md:text-5xl">
-          Six systems worth reading about
-        </h2>
-        <p class="mt-4 text-ink-soft">
-          Each one has a case study covering the problem, the constraints, the architecture,
-          and the parts that were genuinely hard. Private systems are marked as private.
-        </p>
-      </div>
-
-      <!-- flagship spotlight -->
-      {lead && (
-        <a href={`${base}${lead.id}/`}
-           class="reveal group relative mb-8 grid overflow-hidden rounded-3xl md:grid-cols-2"
-           style="--accent:#ff6b35; border:1px solid var(--color-border); background: var(--color-bg-1);">
-          <div class="relative min-h-[260px] overflow-hidden"
-               style="background:
-                 radial-gradient(110% 110% at 20% 15%, color-mix(in oklab, var(--accent) 42%, transparent), transparent 55%),
-                 radial-gradient(120% 120% at 85% 95%, color-mix(in oklab, #00d4ff 30%, transparent), transparent 55%),
-                 linear-gradient(150deg, var(--color-bg-2), var(--color-bg));">
-            {lead.data.cover && (
-              <img src={asset(lead.data.cover)} alt={`${lead.data.title} interface`} loading="eager" decoding="async"
-                   class="absolute inset-0 h-full w-full object-cover object-left-top transition-transform duration-700 group-hover:scale-[1.03]" />
-            )}
-            <div class="absolute inset-0"
-                 style="background: linear-gradient(110deg, transparent 45%, color-mix(in oklab, var(--color-bg-1) 94%, transparent)); box-shadow: inset 0 0 80px color-mix(in oklab, var(--accent) 16%, transparent);"></div>
-          </div>
-          <div class="flex flex-col justify-center gap-4 p-8 md:p-12">
-            <div class="flex flex-wrap items-center gap-3">
-              <span class="text-xs font-semibold uppercase tracking-[0.16em]" style="color: var(--accent);">Flagship</span>
-              <span class="rounded-full px-2.5 py-0.5 text-[11px]"
-                    style="background: var(--color-bg-2); color: var(--accent); border:1px solid color-mix(in oklab, var(--accent) 40%, transparent);">{lead.data.status}</span>
-              <span class="text-[10px] uppercase tracking-wider text-ink-faint">Private source</span>
-            </div>
-            <h3 class="font-display text-3xl font-bold text-ink md:text-4xl">{lead.data.title}</h3>
-            <p class="text-base leading-relaxed text-ink-soft">{lead.data.tagline}</p>
-            <ul class="mt-1 list-none space-y-1.5 p-0">
-              {lead.data.highlights.slice(0, 3).map((h) => (
-                <li class="flex gap-2.5 text-sm text-ink-soft">
-                  <span class="mt-1.5 h-1 w-1 shrink-0 rounded-full" style="background: var(--accent);"></span>{h}
-                </li>
-              ))}
-            </ul>
-            <span class="mt-2 inline-flex items-center gap-1.5 text-sm font-medium" style="color: var(--accent);">
-              Read the case study →
-            </span>
-          </div>
-        </a>
-      )}
-
-      <div class="grid gap-6 sm:grid-cols-2">
-        {restSelected.map((p) => (
-          <div class="reveal">
-            <ProjectCard slug={p.id} title={p.data.title} tagline={p.data.tagline}
-              category={p.data.category} status={p.data.status} stack={p.data.stack}
-              isPrivate={p.data.private} cover={p.data.cover} large />
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- ===================== ENGINEERING AREAS ===================== -->
-    <section id="areas" class="relative scroll-mt-20 overflow-hidden py-20">
-      <div class="aura left-[-12%] top-[20%] h-[440px] w-[440px]" style="--accent:#7c5cfa; opacity:.18;"></div>
-      <div class="relative mx-auto max-w-7xl px-6">
-        <div class="reveal mb-12 max-w-2xl">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand">What I work on</p>
-          <h2 class="mt-3 font-display text-3xl font-bold text-ink md:text-4xl">Engineering areas</h2>
-          <p class="mt-4 text-ink-soft">
-            The range is wide, but it holds together: I build systems end to end, and the
-            problems I like most sit where frontend, backend, data, and infrastructure meet.
-          </p>
-        </div>
-        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {AREAS.map((a) => (
-            <div class="reveal flex flex-col rounded-2xl border p-6 hairline"
-                 style={`--accent:${a.accent}; background: var(--color-bg-1);`}>
-              <span class="mb-3 h-1 w-9 rounded-full" style="background: var(--accent);"></span>
-              <h3 class="font-display text-lg font-semibold text-ink">{a.title}</h3>
-              <p class="mt-2.5 flex-1 text-[14.5px] leading-relaxed text-ink-soft">{a.body}</p>
-              <div class="mt-4 flex flex-wrap gap-1.5">
-                {a.proof.map((p) => (
-                  <span class="rounded-md px-2 py-1 font-mono text-[10.5px] text-ink-mute"
-                        style="background: var(--color-bg-2); border:1px solid var(--color-border);">{p}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== MORE SYSTEMS ===================== -->
-    <section id="more" class="mx-auto max-w-7xl scroll-mt-20 px-6 py-16">
-      <div class="reveal mb-10 max-w-2xl">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand">{GROUPS.engineering.kicker}</p>
-        <h2 class="mt-3 font-display text-3xl font-bold text-ink md:text-4xl">{GROUPS.engineering.title}</h2>
-        <p class="mt-3 text-ink-soft">{GROUPS.engineering.blurb}</p>
-      </div>
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {engineering.map((p) => (
-          <div class="reveal">
-            <ProjectCard slug={p.id} title={p.data.title} tagline={p.data.tagline}
-              category={p.data.category} status={p.data.status} stack={p.data.stack}
-              isPrivate={p.data.private} cover={p.data.cover} />
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <!-- ===================== OPEN SOURCE ===================== -->
-    <section id="open-source" class="mx-auto max-w-7xl scroll-mt-20 px-6 py-16">
-      <div class="reveal mb-10 max-w-2xl">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Open source</p>
-        <h2 class="mt-3 font-display text-3xl font-bold text-ink md:text-4xl">Extracted, not invented</h2>
-        <p class="mt-3 text-ink-soft">
-          Each of these came out of a system that shipped, then had the infrastructure,
-          branding, and data sources stripped so the pattern is the only thing left.
-        </p>
-      </div>
-      <ul class="grid list-none gap-3 p-0 md:grid-cols-2">
-        {OSS.map((r) => (
-          <li class="reveal">
-            <a href={r.repo} rel="noopener"
-               class="group flex h-full flex-col rounded-xl border p-5 transition-colors hairline hover:border-[var(--color-border-bright)]"
-               style="background: var(--color-bg-1);">
-              <div class="flex items-baseline justify-between gap-3">
-                <span class="font-mono text-[13.5px] font-medium text-ink group-hover:text-brand">{r.name}</span>
-                <span class="shrink-0 font-mono text-[10.5px] uppercase tracking-wider text-ink-faint">{r.lang}</span>
-              </div>
-              <p class="mt-2 text-[13.5px] leading-relaxed text-ink-soft">{r.blurb}</p>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-
-    <!-- ===================== EXPERIENCE ===================== -->
-    <section id="experience" class="mx-auto max-w-7xl scroll-mt-20 px-6 py-16">
-      <div class="reveal mb-10 max-w-2xl">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand">Background</p>
-        <h2 class="mt-3 font-display text-3xl font-bold text-ink md:text-4xl">Experience</h2>
-      </div>
-      <ol class="reveal list-none space-y-0 p-0">
-        {experience.map((e, i) => (
-          <li class={`grid gap-2 py-6 md:grid-cols-[220px_1fr] md:gap-10 ${i > 0 ? 'border-t hairline' : ''}`}>
-            <div>
-              <div class="font-mono text-[11px] uppercase tracking-wider text-ink-faint">{e.when}</div>
-              <div class="mt-1.5 text-sm font-medium text-ink">{e.org}</div>
-            </div>
-            <div>
-              <h3 class="font-display text-lg font-semibold text-ink">{e.role}</h3>
-              <p class="mt-2 max-w-3xl leading-relaxed text-ink-soft">{e.body}</p>
-            </div>
-          </li>
-        ))}
-        <li class="grid gap-2 border-t py-6 hairline md:grid-cols-[220px_1fr] md:gap-10">
-          <div>
-            <div class="font-mono text-[11px] uppercase tracking-wider text-ink-faint">2023</div>
-            <div class="mt-1.5 text-sm font-medium text-ink">University of South Alabama</div>
-          </div>
-          <div>
-            <h3 class="font-display text-lg font-semibold text-ink">BS, Computer Science</h3>
-          </div>
-        </li>
-      </ol>
-    </section>
-
-    <!-- ===================== ABOUT ===================== -->
-    <section id="about" class="relative scroll-mt-20 overflow-hidden py-20">
-      <div class="aura right-[-10%] top-[10%] h-[480px] w-[480px]" style="--accent:#7c5cfa; opacity:.18;"></div>
-      <div class="relative mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[1.05fr_1fr]">
-        <div class="reveal">
-          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand">About</p>
-          <h2 class="mt-3 font-display text-3xl font-bold text-ink md:text-4xl">
-            How I actually work
-          </h2>
-          <div class="mt-6 space-y-4 leading-relaxed text-ink-soft">
-            <p>
-              I am a software developer in Mobile, Alabama, with a computer science degree
-              from the University of South Alabama. I spent close to two years as an
-              application developer for a public school district, then went out on my own in
-              January 2026 to build products full time.
-            </p>
-            <p>
-              I pick up unfamiliar stacks quickly because I keep ending up in them. Kotlin
-              and Jetpack Compose because a Fire TV app needed to be native. Preact and
-              Tizen because a Samsung television is a different machine than an Android one.
-              Hono and MCP because I wanted AI agents to be a real client of an API rather
-              than an afterthought. The through-line is not the tools, it is that I would
-              rather own a problem end to end than hand off the hard half of it.
-            </p>
-            <p>
-              I use AI agents heavily as part of how I engineer, for reading unfamiliar
-              codebases, exploring architectures, drafting implementations, and reviewing my
-              own work. The skill that matters there is not prompting, it is knowing how to
-              constrain and verify what comes back. I have shipped an agent that confidently
-              reported work it never did, and the fix was structural: it now cannot make a
-              claim without citing evidence. I bring the same posture to my own code.
-            </p>
-            <p>
-              What I care about: real data over invented numbers, systems that stay running
-              after the demo, and being able to explain every line of what I ship.
-            </p>
-          </div>
-        </div>
-
-        <div class="reveal">
-          <p class="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-brand">Stack</p>
-          <div class="space-y-5">
-            {skills.map((g) => (
+        {flashpoint && (
+          <article class="reveal border-b pb-20 hairline">
+            <div class="grid gap-9 lg:grid-cols-[1.05fr_.95fr] lg:items-start">
               <div>
-                <p class="mb-2 text-sm font-medium text-ink">{g.label}</p>
-                <div class="flex flex-wrap gap-2">
-                  {g.items.map((s) => (
-                    <span class="rounded-md px-2.5 py-1 text-[12px] text-ink-soft"
-                          style="background: var(--color-bg-1); border:1px solid var(--color-border);">{s}</span>
+                <p class="section-kicker">Flagship project</p>
+                <h3 class="mt-3 text-4xl font-semibold text-ink md:text-5xl">{flashpoint.data.title}</h3>
+                <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">{flashpoint.data.tagline}</p>
+                <div class="mt-7 grid max-w-2xl gap-4 sm:grid-cols-2">
+                  {flashpoint.data.highlights.slice(0, 4).map((item) => (
+                    <p class="border-l pl-4 text-sm leading-relaxed text-ink-soft hairline">{item}</p>
                   ))}
                 </div>
+                <a class="rule-link mt-8" href={`${base}${flashpoint.id}/`}>Read the case study</a>
               </div>
-            ))}
-          </div>
+              {flashpoint.data.cover && (
+                <figure class="overflow-hidden border hairline" style="background: var(--color-bg-1);">
+                  <img src={asset(flashpoint.data.cover)} alt="Flashpoint desktop interface" loading="eager" decoding="async" class="block h-auto w-full" />
+                </figure>
+              )}
+            </div>
+          </article>
+        )}
+
+        <div class="grid gap-0 md:grid-cols-2">
+          {[flashProps, chalkline].filter(Boolean).map((project, index) => project && (
+            <article class={`reveal py-14 ${index === 0 ? 'md:pr-10' : 'border-t md:border-l md:border-t-0 md:pl-10'} hairline`}>
+              <p class="section-kicker">Selected project</p>
+              <h3 class="mt-3 text-2xl font-semibold text-ink md:text-3xl">{project.data.title}</h3>
+              <p class="mt-4 leading-relaxed text-ink-soft">{project.data.tagline}</p>
+              <ul class="mt-6 m-0 list-none space-y-3 p-0">
+                {project.data.highlights.slice(0, 3).map((item) => (
+                  <li class="text-sm leading-relaxed text-ink-mute">{item}</li>
+                ))}
+              </ul>
+              <a class="rule-link mt-7 text-sm" href={`${base}${project.id}/`}>View project</a>
+            </article>
+          ))}
+        </div>
+
+        {sessionBrain && (
+          <article class="reveal border-t pt-16 hairline">
+            <div class="grid gap-10 lg:grid-cols-[.85fr_1.15fr] lg:items-start">
+              <div>
+                <p class="section-kicker">Distributed systems</p>
+                <h3 class="mt-3 text-3xl font-semibold text-ink">{sessionBrain.data.title}</h3>
+                <p class="mt-4 leading-relaxed text-ink-soft">{sessionBrain.data.tagline}</p>
+                <a class="rule-link mt-7 text-sm" href={`${base}${sessionBrain.id}/`}>Read the architecture story</a>
+              </div>
+              {sessionBrain.data.diagram && <FlowDiagram id={sessionBrain.data.diagram} />}
+            </div>
+          </article>
+        )}
+      </div>
+    </section>
+
+    <section id="experience" class="scroll-mt-24 border-t hairline">
+      <div class="mx-auto max-w-6xl px-6 py-20 md:py-24">
+        <div class="mb-10 max-w-2xl">
+          <p class="section-kicker">Professional experience</p>
+          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Production work, not just portfolio work</h2>
+        </div>
+        <ol class="m-0 list-none p-0">
+          {experience.map((item, index) => (
+            <li class={`reveal grid gap-3 py-7 md:grid-cols-[180px_1fr] md:gap-10 ${index > 0 ? 'border-t hairline' : ''}`}>
+              <div>
+                <p class="font-mono text-[11px] text-ink-faint">{item.when}</p>
+                <p class="mt-2 text-sm font-medium text-ink">{item.org}</p>
+              </div>
+              <div>
+                <h3 class="text-xl font-semibold text-ink">{item.role}</h3>
+                <p class="mt-3 max-w-3xl leading-relaxed text-ink-soft">{item.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="border-t hairline">
+      <div class="mx-auto max-w-6xl px-6 py-20 md:py-24">
+        <div class="mb-8 max-w-2xl">
+          <p class="section-kicker">More engineering</p>
+          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Additional systems and experiments</h2>
+        </div>
+        <div class="border-t hairline">
+          {more.map((project) => (
+            <a href={`${base}${project.id}/`} class="reveal group grid gap-3 border-b py-5 no-underline hairline md:grid-cols-[220px_1fr_auto] md:items-baseline md:gap-8">
+              <span class="font-medium text-ink group-hover:text-brand">{project.data.title}</span>
+              <span class="text-sm leading-relaxed text-ink-mute">{project.data.tagline}</span>
+              <span class="text-sm text-ink-faint">View →</span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
 
-    <!-- ===================== CONTACT ===================== -->
-    <section id="contact" class="relative scroll-mt-20 px-6 py-20">
-      <div class="relative mx-auto max-w-4xl overflow-hidden rounded-3xl border p-10 text-center md:p-16 hairline"
-           style="background: radial-gradient(120% 140% at 50% 0%, color-mix(in oklab, var(--color-brand) 14%, transparent), transparent 60%), var(--color-bg-1);">
-        <div class="aura left-1/2 top-[-30%] h-[360px] w-[360px] -translate-x-1/2" style="--accent:#00d4ff; opacity:.3;"></div>
-        <div class="relative">
-          <h2 class="font-display text-3xl font-bold text-ink md:text-5xl">Hiring, or need something built?</h2>
-          <p class="mx-auto mt-4 max-w-xl text-ink-soft">
-            I am open to engineering roles and contract work. Tell me what you are trying to
-            ship and I will tell you the fastest real path to it.
-          </p>
-          <div class="mt-8 flex flex-wrap justify-center gap-4">
-            <a href="mailto:jaylon@flashaisolutions.org"
-               class="rounded-full px-6 py-3 text-sm font-semibold text-black transition-transform hover:scale-[1.03]"
-               style="background: linear-gradient(135deg, var(--color-brand), var(--color-brand-deep));">
-              jaylon@flashaisolutions.org
+    <section id="open-source" class="scroll-mt-24 border-t hairline">
+      <div class="mx-auto max-w-6xl px-6 py-20 md:py-24">
+        <div class="mb-10 max-w-3xl">
+          <p class="section-kicker">Open source</p>
+          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Extracted, not invented</h2>
+          <p class="mt-4 leading-relaxed text-ink-soft">Reusable pieces pulled out of systems that shipped, then stripped of private infrastructure, branding, and data sources.</p>
+        </div>
+        <div class="border-t hairline">
+          {OSS.map((repo) => (
+            <a href={repo.repo} class="reveal group grid gap-2 border-b py-5 no-underline hairline md:grid-cols-[280px_100px_1fr] md:gap-6">
+              <span class="font-mono text-[13px] font-medium text-ink group-hover:text-brand">{repo.name}</span>
+              <span class="text-xs text-ink-faint">{repo.lang}</span>
+              <span class="text-sm leading-relaxed text-ink-mute">{repo.blurb}</span>
             </a>
-            <a href="https://github.com/iFan6oy" rel="noopener"
-               class="rounded-full border px-6 py-3 text-sm font-medium text-ink hairline"
-               style="background: var(--color-bg-2);">GitHub</a>
-            <a href="https://linkedin.com/in/jaylon-malone" rel="noopener"
-               class="rounded-full border px-6 py-3 text-sm font-medium text-ink hairline"
-               style="background: var(--color-bg-2);">LinkedIn</a>
-            <a href={asset('JaylonMalone_Resume.pdf')}
-               class="rounded-full border px-6 py-3 text-sm font-medium text-ink hairline"
-               style="background: var(--color-bg-2);">Resume</a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="scroll-mt-24 border-t hairline">
+      <div class="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:py-24 lg:grid-cols-[1fr_.8fr]">
+        <div class="reveal">
+          <p class="section-kicker">About</p>
+          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">I like owning systems end to end.</h2>
+          <div class="mt-6 max-w-2xl space-y-4 leading-relaxed text-ink-soft">
+            <p>I'm an application developer with a computer science background and professional experience shipping internal business systems.</p>
+            <p>My independent work spans APIs, AI workflows, backend systems, cross-device applications, and native TV software. I care about the whole lifecycle: understanding the problem, building the implementation, operating it, and improving it from real usage.</p>
+          </div>
+        </div>
+        <div id="contact" class="reveal scroll-mt-24 border-l pl-6 hairline lg:pl-10">
+          <p class="section-kicker">Contact</p>
+          <h2 class="mt-3 text-2xl font-semibold text-ink">Let's talk about the work.</h2>
+          <p class="mt-4 leading-relaxed text-ink-soft">For engineering roles, contract work, or technical collaboration, email is the fastest way to reach me.</p>
+          <div class="mt-6 space-y-3 text-sm">
+            <a class="block font-medium text-brand" href="mailto:jaylon@flashaisolutions.org">jaylon@flashaisolutions.org</a>
+            <a class="block text-ink-soft" href="https://github.com/iFan6oy">GitHub</a>
+            <a class="block text-ink-soft" href="https://linkedin.com/in/jaylon-malone">LinkedIn</a>
+            <a class="block text-ink-soft" href={asset('JaylonMalone_Resume.pdf')}>Resume (PDF)</a>
           </div>
         </div>
       </div>
