@@ -2,6 +2,9 @@
 dist/
 .astro/
 
+# generated assets
+public/JaylonMalone_Resume.pdf
+
 # deps
 node_modules/
 
