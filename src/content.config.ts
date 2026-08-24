@@ -2,51 +2,68 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 /**
- * Projects are DATA, never hardcoded markup. Each project is one markdown file
- * in src/content/projects/. Frontmatter is typed + validated below; the body
- * (markdown) becomes the long-form case study on the detail page.
+ * Projects are DATA, never hardcoded markup. Each project is one markdown file in
+ * src/content/projects/. Frontmatter is typed + validated below.
+ *
+ * The strongest projects fill in the structured case-study fields (problem,
+ * constraints, architecture, decisions, hardProblems, result, demonstrates) and the
+ * detail page renders them as real sections. Lighter entries just use the markdown
+ * body. Everything below `tagline` is optional on purpose: a half-filled case study
+ * renders cleanly rather than leaving empty headings on the page.
  */
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
     tagline: z.string(),
-    // one of the canonical categories (drives accent + grouping)
     category: z.enum([
+      'systems',
       'ai',
-      'business',
-      'mobile',
+      'api',
       'media',
-      'trading',
+      'tv',
+      'mobile',
       'data',
+      'automation',
       'power',
-      'lab',
+      'trading',
     ]),
-    // narrative grouping shown on the homepage
-    group: z.enum([
-      'featured',
-      'business',
-      'ai',
-      'experiments',
-    ]),
+    // homepage placement
+    group: z.enum(['selected', 'engineering']),
     role: z.string().default('Solo Developer'),
     year: z.coerce.string().default('2026'),
     status: z.enum(['Live', 'Active', 'Shipped', 'Prototype', 'Archived']),
     stack: z.array(z.string()),
-    // outcome bullets surfaced on the card / detail header
     highlights: z.array(z.string()).default([]),
     links: z
       .object({
         live: z.string().url().optional(),
         repo: z.string().url().optional(),
-        caseStudy: z.string().optional(),
+        /** override the repo button label, e.g. when the link is a public
+         *  write-up of a pattern rather than the private implementation */
+        repoLabel: z.string().optional(),
+        docs: z.string().url().optional(),
       })
       .default({}),
-    cover: z.string().optional(), // /covers/x.jpg — placeholder ok
+    cover: z.string().optional(),
     featured: z.boolean().default(false),
     order: z.number().default(50), // lower = earlier
-    // honesty flags from CLAUDE.md guardrails
-    private: z.boolean().default(false), // raw repo can't be public
+    private: z.boolean().default(false), // source can't be public; no repo link
+
+    // ---- structured case study (all optional) ----
+    problem: z.string().optional(),
+    constraints: z.array(z.string()).default([]),
+    architecture: z.string().optional(),
+    /** key id of a diagram defined in src/lib/diagrams.ts */
+    diagram: z.string().optional(),
+    decisions: z
+      .array(z.object({ title: z.string(), body: z.string() }))
+      .default([]),
+    hardProblems: z
+      .array(z.object({ title: z.string(), body: z.string() }))
+      .default([]),
+    result: z.array(z.string()).default([]),
+    demonstrates: z.array(z.string()).default([]),
   }),
 });
 
