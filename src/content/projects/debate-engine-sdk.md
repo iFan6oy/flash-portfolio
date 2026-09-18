@@ -2,13 +2,13 @@
 title: Debate Engine SDK
 tagline: "The escalation pattern I reuse across projects, extracted into an installable package: cheap rules first, a model only when the call is close."
 category: ai
-group: engineering
+group: archive
 role: Solo Developer
 year: 2026
-status: Active
+status: Archived
 featured: false
 order: 21
-private: false
+private: true
 stack:
   - Python
   - LLM provider APIs

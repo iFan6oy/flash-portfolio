@@ -1,13 +1,14 @@
 ---
 title: Launcher-Man
 tagline: A finished 2D Unity platformer in C#, where the engineering is in how the movement feels rather than in the level.
-category: mobile
-group: engineering
+category: games
+group: supporting
+capability: Game development in C#
 role: Solo Developer
 year: 2026
 status: Shipped
 featured: false
-order: 24
+order: 16
 private: false
 stack:
   - C#

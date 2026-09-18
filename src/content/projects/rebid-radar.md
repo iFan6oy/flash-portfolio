@@ -2,10 +2,10 @@
 title: Rebid Radar
 tagline: A contract intelligence pipeline built on public federal data, where every asserted fact carries evidence and "we checked and it is absent" is a recorded state.
 category: data
-group: engineering
+group: archive
 role: Solo Developer
 year: 2026
-status: Prototype
+status: Archived
 featured: false
 order: 17
 private: true

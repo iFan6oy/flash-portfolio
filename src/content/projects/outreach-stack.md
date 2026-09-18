@@ -2,10 +2,10 @@
 title: Lead and Outreach Stack
 tagline: "Two services that form one pipeline: multi-source lead collection with contact enrichment, feeding a personalized email sender with reply classification."
 category: automation
-group: engineering
+group: archive
 role: Solo Developer
 year: 2026
-status: Active
+status: Archived
 featured: false
 order: 18
 private: true

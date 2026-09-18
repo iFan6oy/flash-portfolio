@@ -2,7 +2,7 @@
 title: Cutt It
 tagline: A barbershop booking app with real payments and a real client, built as a React Native front end over a Node and PostgreSQL backend.
 category: mobile
-group: engineering
+group: archive
 role: Co-founder and Lead Developer
 year: 2025 to present
 status: Active

@@ -2,12 +2,13 @@
 title: FirstApply
 tagline: A job discovery pipeline that refuses to create a match until it has verified the role is really remote and the application path is really free.
 category: automation
-group: engineering
+group: supporting
+capability: Data pipelines with quality gates
 role: Solo Developer
 year: 2026
 status: Active
 featured: false
-order: 15
+order: 14
 private: true
 stack:
   - TypeScript

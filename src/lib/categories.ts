@@ -13,17 +13,21 @@ export type Category =
   | 'data'
   | 'automation'
   | 'power'
-  | 'trading';
+  | 'trading'
+  | 'web'
+  | 'games';
 
 export const CATEGORY: Record<Category, { label: string; accent: string; rgb: string }> = {
-  systems: { label: 'Distributed systems', accent: '#68c7e8', rgb: '104 199 232' },
-  ai: { label: 'AI & agents', accent: '#68c7e8', rgb: '104 199 232' },
+  systems: { label: 'Systems design', accent: '#68c7e8', rgb: '104 199 232' },
+  ai: { label: 'AI products', accent: '#68c7e8', rgb: '104 199 232' },
   api: { label: 'APIs & data products', accent: '#68c7e8', rgb: '104 199 232' },
-  media: { label: 'Media infrastructure', accent: '#68c7e8', rgb: '104 199 232' },
-  tv: { label: 'TV & native clients', accent: '#68c7e8', rgb: '104 199 232' },
-  mobile: { label: 'Mobile', accent: '#68c7e8', rgb: '104 199 232' },
-  data: { label: 'Data systems', accent: '#68c7e8', rgb: '104 199 232' },
+  media: { label: 'Cross-device product', accent: '#68c7e8', rgb: '104 199 232' },
+  tv: { label: 'TV & native apps', accent: '#68c7e8', rgb: '104 199 232' },
+  mobile: { label: 'Mobile apps', accent: '#68c7e8', rgb: '104 199 232' },
+  data: { label: 'Data products', accent: '#68c7e8', rgb: '104 199 232' },
   automation: { label: 'Automation', accent: '#68c7e8', rgb: '104 199 232' },
-  power: { label: 'Power Platform', accent: '#68c7e8', rgb: '104 199 232' },
+  power: { label: 'Business applications', accent: '#68c7e8', rgb: '104 199 232' },
   trading: { label: 'Autonomous systems', accent: '#68c7e8', rgb: '104 199 232' },
+  web: { label: 'Web product', accent: '#68c7e8', rgb: '104 199 232' },
+  games: { label: 'Games', accent: '#68c7e8', rgb: '104 199 232' },
 };

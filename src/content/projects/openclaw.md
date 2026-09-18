@@ -3,12 +3,13 @@ title: OpenClaw
 tagline: A long-running autonomous agent, and the grounding mechanism I had to build after it started reporting work it had never done.
 cover: /covers/openclaw.png
 category: ai
-group: engineering
+group: supporting
+capability: AI agents with human approval
 role: Solo Developer
 year: 2026 to present
 status: Active
 featured: false
-order: 13
+order: 15
 private: false
 stack:
   - Node.js

@@ -3,7 +3,7 @@ title: Flash Trader
 tagline: An autonomous decision engine that argues a bull case against a bear case and only escalates to an LLM when the cheap rules cannot settle it.
 cover: /covers/flash-trader.png
 category: trading
-group: engineering
+group: archive
 role: Solo Developer
 year: 2025 to present
 status: Live

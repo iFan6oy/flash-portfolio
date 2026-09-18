@@ -91,8 +91,9 @@ export const DIAGRAMS: Record<string, Diagram> = {
         rail: 'Consumers',
         nodes: [
           { label: 'AI agents' },
+          { label: 'Developers' },
+          { label: 'Flash Odds site' },
           { label: 'Discord bot' },
-          { label: 'Web board' },
         ],
       },
     ],

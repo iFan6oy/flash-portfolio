@@ -2,7 +2,7 @@
 title: Term Hunter
 tagline: A multi-stage LLM pipeline built around the assumption that the model will fail, with a defined safe default at every gate.
 category: ai
-group: engineering
+group: archive
 role: Solo Developer
 year: 2026
 status: Active

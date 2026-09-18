@@ -1,119 +1,132 @@
 ---
 title: Flash Props
-tagline: A commercial sports and esports props API where an OpenAPI REST surface and an MCP server for AI agents are two interfaces over the same normalized data.
+tagline: A commercial sports and esports data API. Developers call it over the web, AI assistants call it directly, and both get the same games, player props, history, and projections.
+description: Flash Props is a paid sports and esports data API with a REST interface for developers and an MCP server for AI agents, covering games, player props, line history, projections, and evidence. Case study by Jaylon Malone.
 category: api
 group: selected
-role: Solo Developer
+role: Solo developer
 year: 2026
 status: Live
 featured: true
 order: 3
-private: false
+private: true
 logo: ../../assets/logos/flash-props.svg
 diagram: flashProps
+overview: >-
+  Flash Props is a data product. It collects player-prop lines (the numbers
+  sportsbooks post for things like a player's points or passing yards) across
+  traditional sports and esports, cleans them into one consistent format, and adds
+  history, projections, and the evidence behind them. Developers use it through a
+  normal web API with docs and self-serve keys. AI assistants use it through the
+  Model Context Protocol, so an agent can ask a question and get structured data
+  back instead of scraping a web page. My own consumer site, Flash Odds, runs on
+  the same API.
+highlights:
+  - One system serves developers, AI agents, and my own Flash Odds site, so every consumer sees the same games, players, and lines.
+  - Covers the major US leagues, college football, and esports titles such as CS2, Dota 2, Valorant, and Call of Duty, with coverage stated honestly per sport.
+  - Keeps line history, so a caller can see how a number moved, not just where it sits now, and graded results once games finish.
+  - Free tier plus paid plans, with self-serve keys, usage limits, and subscription billing built in from day one.
+engineering:
+  - "Hono on Node with routes declared as Zod schemas. The OpenAPI 3.1 document and the interactive reference are generated from those schemas, and 15 documented REST paths cover sports, markets, games, props, player props, history, movement, changes, player context, evidence, leaders, and visuals."
+  - A remote MCP server with 12 tools, listed in the official MCP Registry. Tools are shaped around the questions an agent asks, such as finding a game from two team names, rather than mirroring tables. Two discovery tools work without a key, so an agent can learn what exists before authenticating.
+  - "API keys are stored as HMAC-SHA256 hashes with only a short prefix in plaintext. REST and MCP share one authentication path, so expiry and tier limits behave the same on both."
+  - "Two processes: a data worker is the only thing allowed to call outside providers, and the API serves only local data. An upstream outage cannot stall request handling."
+  - A historical archive of more than 14 million line snapshots, graded into results after games settle, powering history and movement endpoints.
+  - "Data Foundry: versioned, immutable data packs with pointer-based rollback and a per-source rights policy enforced in code. Sources without cleared data rights fail closed."
+  - Around 2,300 Vitest tests, including a check that the list of anonymous MCP tools matches what the server actually registers.
 stack:
   - TypeScript
   - Hono
   - "@hono/zod-openapi"
+  - Model Context Protocol SDK
+  - Zod 4
   - Drizzle ORM
-  - SQLite
-  - Model Context Protocol
+  - SQLite (better-sqlite3)
   - Stripe
-  - SvelteKit
-highlights:
-  - REST and MCP are generated from the same Zod schemas, so the agent interface and the HTTP interface cannot drift
-  - Twelve MCP tools spanning games, props, player context, evidence, line history, and movers
-  - API keys are HMAC-hashed at rest, with per-tier rate limits and usage counters
-  - Anonymous access is allowed for capability discovery so an agent can see what exists before it has a key
+  - Vitest
 links:
   live: https://api.flashodds.live/
   repo: https://github.com/iFan6oy/flash-props-mcp
+  repoLabel: View the public MCP connector
+related:
+  - slug: flash-odds
+    label: Flash Odds, the consumer site built on this API
 problem: >-
-  Sports and esports prop data is scattered across providers that all model the same
-  concepts differently, and almost none of it is shaped for a program to consume.
-  I wanted a single clean feed of player props across traditional sports and esports,
-  and I wanted an AI agent to be able to query it directly rather than scraping a
-  page or being handed a CSV.
+  Sports and esports prop data is scattered across providers that describe the
+  same things differently, and almost none of it is shaped for a program to use. I
+  wanted one clean feed of player props across sports and esports that a developer
+  could build on in an afternoon, and that an AI agent could query directly instead
+  of scraping a page or being handed a spreadsheet.
 constraints:
-  - Upstreams disagree on entity shapes, naming, and identifiers, and they change without notice.
-  - It has to cost effectively nothing to run, which rules out paid data feeds and forces free upstreams plus careful caching.
-  - Anything sold has to be metered, billed, and rate limited, which means auth and usage accounting from the start rather than bolted on.
-  - Data quality is the product. A wrong line is worse than a missing one.
+  - Providers disagree on names, shapes, and identifiers, and change without notice. A line attached to the wrong player is worse than a missing line.
+  - It had to be cheap to run, which means free or low-cost upstreams, careful caching, and a database that stays fast on one server.
+  - Anything sold has to be metered, rate limited, and billed, so authentication and usage accounting were designed in from the start.
+  - Model output has to earn its place. A new projection model does not serve customers until it beats the current one on held-out data.
 architecture: >-
-  Provider adapters normalize each upstream into canonical entities: games, players,
-  prop lines, and market metadata. A projection and evidence layer sits above that,
-  deriving Flash lines, recent form, sample strength, and line movement. Two
-  interfaces are then generated over the same models. The REST surface is defined
-  with Zod schemas that produce an OpenAPI 3.1 spec and an interactive reference,
-  and the MCP server exposes the same capabilities as typed tools over streamable
-  HTTP. Keys, tiers, and usage live in SQLite through Drizzle, with Stripe driving
-  the subscription lifecycle by webhook.
+  A data worker pulls from each provider through adapters that translate its
+  format into shared entities: games, players, prop lines, and market metadata.
+  Above that sits the history and projection layer: line snapshots, graded
+  results, recent form, sample strength, and movement. Two interfaces are then
+  generated over the same models, a REST API with generated OpenAPI docs and an
+  MCP server for agents. Keys, tiers, and usage live in the same database, and
+  Stripe drives the subscription lifecycle by webhook.
 decisions:
-  - title: Schema-first, with both interfaces downstream of it
+  - title: Schema first, with both interfaces downstream
     body: >-
-      Routes are declared with Zod schemas and the OpenAPI document is generated from
-      them rather than maintained by hand. Because the MCP tools are built over the
-      same models, there is no drift between what the docs promise, what the API
-      returns, and what an agent sees. A hand-written spec goes stale within weeks.
-  - title: Treat AI agents as a first-class client, not an add-on
+      Routes are declared as Zod schemas and the OpenAPI document is generated
+      from them. Because the MCP tools are built over the same models, the docs,
+      the API responses, and what an agent sees cannot drift apart. A hand-written
+      spec goes stale within weeks.
+  - title: AI agents are a first-class customer
     body: >-
-      The MCP server is not a wrapper over the REST API. Tools are shaped around
-      questions an agent actually asks, like resolve these team names to an event or
-      give me the full story behind this one prop, instead of forcing it to chain
-      four generic endpoints and do the joins itself.
-  - title: Allow anonymous capability discovery
+      The MCP server is not a thin wrapper over REST. Tools answer whole
+      questions, like the full story behind one prop, so an agent gets a useful
+      answer in one call instead of spending its context joining four generic
+      endpoints.
+  - title: A new model earns production on a one-look holdout
     body: >-
-      Listing sports and market metadata works without a key. An agent connecting for
-      the first time can discover what the server can do before authentication,
-      which removes the dead end where a tool call fails and the model has no way to
-      learn why.
-  - title: Hash keys, meter everything
+      Challenger projection models are frozen and registered before they are
+      judged, every look at the held-out data is recorded, and a spent holdout
+      forces a new version. The September NFL, college football, and NBA
+      challengers are running in shadow under this rule and are not serving yet.
+  - title: Build it dark when the rights are not clear
     body: >-
-      Keys are HMAC-hashed at rest, so the database never holds anything that can be
-      replayed if it leaks. Tiers differ by request volume, scan size, and sport
-      breadth, and usage counters are part of the same store rather than an
-      afterthought.
+      Multi-book market consensus is built and deployed, but switched off, until
+      a data provider and resale terms are in place. Shipping the code without
+      shipping the claim keeps the product honest.
 hardProblems:
-  - title: Entity linkage across providers
+  - title: One slow query froze every request
     body: >-
-      The obvious identifier fields in these payloads are frequently null or
-      inconsistent, so the real linkage between a prop line and the player and event
-      it belongs to has to be resolved from the fields that are actually populated.
-      Getting this wrong does not error, it silently attaches a line to the wrong
-      player.
-  - title: An open stat taxonomy that does not break on a new game
+      The movement endpoint pulled up to 50,000 rows into Node through a
+      synchronous SQLite driver, which blocked the entire API for 10 to 16
+      seconds, and its row cap kept the oldest moves instead of the newest. A
+      separate index put the timestamp last, so time filters scanned about 11
+      million rows. The fix moved the grouping into SQLite and replaced the scans
+      with indexed seeks, with large indexes built by hand-run scripts rather than
+      at boot so a deploy never stalls on a multi-million-row index build.
+  - title: Matching lines to the right player and game
     body: >-
-      Stat types are an open, documented taxonomy rather than a closed enum, so
-      adding a game or a new stat does not require a breaking schema change. The
-      pattern is published separately as a standalone schema repository.
-  - title: Upstream fragility
+      The obvious identifier fields in provider payloads are often empty or
+      inconsistent. Linkage only accepts exact name and market matches, events are
+      keyed by real start time (one date had two All-Star games), and a game with
+      no date is skipped rather than graded as zero.
+  - title: Migrating live data without changing answers
     body: >-
-      Providers go dark, get blocked, or return empty. The system carries multiple
-      adapters and degrades to what is actually available rather than presenting a
-      broken board, and coverage is described honestly per sport instead of claimed
-      uniformly.
+      Every move onto the new data packs had to reproduce the old output exactly
+      first. The NFL migration matched 290 players and 956 markets with zero
+      differences before it was allowed to proceed.
 result:
-  - Live in production at api.flashodds.live with an interactive reference, an OpenAPI spec, agent-discovery files, and self-serve key provisioning.
-  - Public board site shipping on SvelteKit, plus a public Discord bot as a reference consumer of the API.
-  - "Three pieces published as open source: the MCP connector, the metadata schema pattern, and the bot."
-demonstrates:
-  - Designing and shipping an API as a product, not just an endpoint
-  - Schema-first contracts with generated documentation
-  - Model Context Protocol server design for real agent consumption
-  - Normalizing messy multi-provider data into a canonical model
-  - Auth, metering, rate limiting, and billing lifecycle
+  - Live at api.flashodds.live with an interactive reference, an OpenAPI spec, agent discovery files, self-serve keys, and a free tier.
+  - Paid plans are live and billed through Stripe. Flash Odds runs on the same API.
+  - The historical line archive, history and movement endpoints, and the Call of Duty player visuals endpoint are live.
+  - New projection models for the NFL, college football, and the NBA, plus market consensus and NBA shot data, are deployed in shadow or switched off pending evaluation, data rights, or the season. They are not claimed as live.
+  - "Published as open source: the MCP connector, the esports metadata schema pattern, and a reference Discord bot."
 ---
 
-Flash Props is the project that best shows what I mean by building a system end to
+Flash Props is the project that best shows what I mean by owning a system end to
 end. It is data engineering at the bottom, API product design in the middle, and
-agent tooling at the top, and every layer had to be right for the one above it to be
-worth anything.
+agent tooling at the top, and every layer had to be right for the one above it to
+be worth anything.
 
-The part I would point at first is the MCP work. Most MCP servers are a thin wrapper
-that re-exposes existing endpoints and leaves the model to figure out the joins.
-These tools are shaped around the questions rather than the tables, which is the
-difference between an agent that can answer something useful in one call and one that
-burns its context assembling the answer itself.
-
-The hosted API is a paid product with a free tier. The connector, the schema pattern,
-and a reference bot are all public.
+The hosted API is a paid product with a free tier. The implementation is private;
+the MCP connector, the schema pattern, and the reference bot are public.

@@ -2,12 +2,13 @@
 title: TRA
 tagline: The district travel reimbursement system I built and ran in production, rebuilt as multi-tenant B2B SaaS on a modern stack.
 category: power
-group: selected
+group: supporting
+capability: Full-stack SaaS
 role: Founder and Developer
 year: 2026 to present
 status: Active
 featured: true
-order: 6
+order: 13
 private: false
 stack:
   - TypeScript

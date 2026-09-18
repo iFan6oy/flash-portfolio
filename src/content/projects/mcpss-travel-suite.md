@@ -2,12 +2,13 @@
 title: MCPSS Travel and Voucher Suite
 tagline: The district-wide reimbursement platform I built and supported as an application developer, on Power Apps, Power Automate, and SharePoint.
 category: power
-group: engineering
+group: supporting
+capability: Professional business applications
 role: Application Developer, Mobile County Public Schools
 year: 2024 to 2026
 status: Shipped
 featured: false
-order: 19
+order: 12
 private: false
 stack:
   - Power Apps

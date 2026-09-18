@@ -1,13 +1,14 @@
 ---
 title: TV Focus Navigation Kit
-tagline: The D-pad focus problems that make Android TV apps feel broken, solved as a reusable Jetpack Compose library extracted from a shipped app.
+tagline: "A reusable library that makes Android TV apps behave with a remote: fixes for the focus and scrolling bugs that make TV apps feel broken, extracted from my Fire TV app."
 category: tv
-group: selected
+group: supporting
+capability: Native Android TV development
 role: Solo Developer
 year: 2026
 status: Shipped
 featured: true
-order: 5
+order: 11
 private: false
 stack:
   - Kotlin

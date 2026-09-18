@@ -2,10 +2,10 @@
 title: Media Brain
 tagline: A taste and memory engine over a media event firehose, where every score can cite the exact signals that produced it.
 category: data
-group: engineering
+group: archive
 role: Solo Developer
 year: 2026
-status: Active
+status: Prototype
 featured: false
 order: 16
 private: true

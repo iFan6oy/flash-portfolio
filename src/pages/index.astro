@@ -2,42 +2,49 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import headshot from '../assets/jaylon-malone.jpg';
+import oddsHome from '../assets/screens/flash-odds-home.png';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import FlowDiagram from '../components/FlowDiagram.astro';
 import { OSS } from '../lib/openSource';
 
 const base = import.meta.env.BASE_URL;
 const asset = (path: string) => base + path.replace(/^\//, '');
 const projects = await getCollection('projects');
 const byOrder = (a: any, b: any) => a.data.order - b.data.order;
+const byId = (id: string) => projects.find((p) => p.id === id);
 
-const flashpoint = projects.find((p) => p.id === 'flashpoint');
-const flashProps = projects.find((p) => p.id === 'flash-props');
-const chalkline = projects.find((p) => p.id === 'chalkline');
-const sessionBrain = projects.find((p) => p.id === 'session-brain');
-const primaryIds = new Set(['flashpoint', 'flash-props', 'chalkline', 'session-brain']);
-const more = projects.filter((p) => !primaryIds.has(p.id)).sort(byOrder);
+const flashpoint = byId('flashpoint');
+const flashOdds = byId('flash-odds');
+const flashProps = byId('flash-props');
+const chalkline = byId('chalkline');
+const supporting = projects.filter((p) => p.data.group === 'supporting').sort(byOrder);
+const archive = projects.filter((p) => p.data.group === 'archive').sort(byOrder);
+
+// What each paired project is evidence of, in one plain phrase.
+const pairKicker: Record<string, string> = {
+  'flash-props': 'APIs, data, and AI agents',
+  chalkline: 'Practical AI product',
+};
 
 const experience = [
   {
     role: 'Founder & Engineer',
     org: 'Flash AI Solutions',
     when: '2026 to present',
-    body: 'Building and shipping independent software products, APIs, automation systems, and client work. Current systems include Flashpoint, Flash Props, Chalkline, and a growing set of production-derived open-source tools.',
+    body: 'I design, build, deploy, and run my own software products end to end: Flashpoint, Flash Odds, the Flash Props API, and Chalkline, plus client automation work. That includes the unglamorous parts: billing, monitoring, deployment pipelines, and fixing what breaks in production.',
   },
   {
     role: 'Application Developer',
     org: 'Mobile County Public Schools',
     when: '2024 to 2026',
-    body: 'Owned production workflow software across Power Apps, Power Automate, SharePoint, and Power BI, including the district travel reimbursement and voucher platform and additional operational systems.',
+    body: 'Owned production workflow applications for a large public school district on Power Apps, Power Automate, SharePoint, and Power BI. The largest was the district travel reimbursement and voucher system, which I consolidated from three separate apps into one approval pipeline and supported while staff used it to get reimbursed. I also built discipline referral and equipment tracking applications and reporting dashboards.',
   },
   {
     role: 'Software Development Intern',
     org: 'Keesler Federal Credit Union',
     when: '2022 to 2023',
-    body: 'Built process automation with UiPath, SQL reporting, Power BI dashboards, and PowerShell tooling for internal teams.',
+    body: 'Built UiPath automations for internal processes, wrote SQL reporting, created Power BI dashboards, and wrote PowerShell scripts that automated support tasks for internal teams.',
   },
 ];
 ---
@@ -51,7 +58,7 @@ const experience = [
         Application Developer & Software Engineer
       </h1>
       <p class="mt-7 max-w-3xl text-lg leading-relaxed text-ink-soft md:text-xl">
-        I build production applications, APIs, automation, AI systems, and cross-device software. My work ranges from enterprise workflow systems to native TV clients and agent-facing data products.
+        I build software people actually use: web apps, APIs, automation, AI-powered products, and apps that run across phones, PCs, and TVs. I design it, ship it, and keep it running in production.
       </p>
       <div class="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm">
         <a class="rule-link" href="#work">Selected work</a>
@@ -59,8 +66,8 @@ const experience = [
         <a class="text-ink-soft hover:text-ink" href="https://github.com/iFan6oy">GitHub</a>
         <a class="text-ink-soft hover:text-ink" href="mailto:jaylon@flashaisolutions.org">Email</a>
       </div>
-      <p class="mt-16 border-t pt-5 text-sm text-ink-mute hairline">
-        Professional experience includes application development for Mobile County Public Schools and software development work at Keesler Federal Credit Union.
+      <p class="mt-16 max-w-4xl border-t pt-5 text-sm leading-relaxed text-ink-mute hairline">
+        Previously an application developer at Mobile County Public Schools, building the workflow apps district staff used every day, and a software development intern at Keesler Federal Credit Union. B.S. in Computer Science, University of South Alabama.
       </p>
     </section>
 
@@ -68,15 +75,15 @@ const experience = [
       <div class="mx-auto max-w-6xl px-6 py-20 md:py-24">
         <div class="mb-12 max-w-2xl">
           <p class="section-kicker">Selected work</p>
-          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Systems worth inspecting</h2>
-          <p class="mt-4 leading-relaxed text-ink-soft">A small set of projects that best show how I design, build, and operate software end to end.</p>
+          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Products I built and run</h2>
+          <p class="mt-4 leading-relaxed text-ink-soft">Four live products, each a different kind of engineering. Every case study starts with what the product does, then gets into how it works.</p>
         </div>
 
         {flashpoint && (
           <article class="reveal border-b pb-20 hairline">
             <div class="grid gap-9 lg:grid-cols-[1.05fr_.95fr] lg:items-start">
               <div>
-                <p class="section-kicker">Flagship project</p>
+                <p class="section-kicker">Flagship · Cross-device product</p>
                 <h3 class="mt-3 text-4xl font-semibold text-ink md:text-5xl">{flashpoint.data.title}</h3>
                 <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">{flashpoint.data.tagline}</p>
                 <div class="mt-7 grid max-w-2xl gap-4 sm:grid-cols-2">
@@ -84,13 +91,53 @@ const experience = [
                     <p class="border-l pl-4 text-sm leading-relaxed text-ink-soft hairline">{item}</p>
                   ))}
                 </div>
-                <a class="rule-link mt-8" href={`${base}${flashpoint.id}/`}>Read the case study</a>
+                <div class="mt-8 flex flex-wrap gap-x-7 gap-y-3">
+                  <a class="rule-link" href={`${base}${flashpoint.id}/`}>Read the case study</a>
+                  <a class="text-sm text-ink-soft hover:text-ink" href={`${base}session-brain/`}>Deep dive: keeping four devices in sync</a>
+                </div>
               </div>
               {flashpoint.data.cover && (
-                <figure class="overflow-hidden border hairline" style="background: var(--color-bg-1);">
-                  <img src={asset(flashpoint.data.cover)} alt="Flashpoint desktop interface" loading="eager" decoding="async" class="block h-auto w-full" />
+                <figure class="m-0">
+                  <div class="overflow-hidden border hairline" style="background: var(--color-bg-1);">
+                    <img src={asset(flashpoint.data.cover)} alt="Flashpoint on Fire TV: the home screen with remote focus on a Continue Watching card" width="1920" height="850" loading="eager" decoding="async" class="block h-auto w-full" />
+                  </div>
+                  <figcaption class="mt-3 text-xs text-ink-faint">Fire TV app, native Kotlin and Jetpack Compose.</figcaption>
                 </figure>
               )}
+            </div>
+          </article>
+        )}
+
+        {flashOdds && (
+          <article class="reveal border-b py-20 hairline">
+            <div class="grid gap-9 lg:grid-cols-[.95fr_1.05fr] lg:items-start">
+              <div class="lg:order-last">
+                <p class="section-kicker">Web product · Frontend, data, and visualization</p>
+                <h3 class="mt-3 text-4xl font-semibold text-ink md:text-5xl">{flashOdds.data.title}</h3>
+                <p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">{flashOdds.data.tagline}</p>
+                <div class="mt-7 grid max-w-2xl gap-4 sm:grid-cols-2">
+                  {flashOdds.data.highlights.slice(0, 4).map((item) => (
+                    <p class="border-l pl-4 text-sm leading-relaxed text-ink-soft hairline">{item}</p>
+                  ))}
+                </div>
+                <div class="mt-8 flex flex-wrap gap-x-7 gap-y-3">
+                  <a class="rule-link" href={`${base}${flashOdds.id}/`}>Read the case study</a>
+                  {flashOdds.data.links.live && <a class="text-sm text-ink-soft hover:text-ink" href={flashOdds.data.links.live}>Visit flashodds.live</a>}
+                </div>
+              </div>
+              <figure class="m-0">
+                <div class="overflow-hidden border hairline" style="background: var(--color-bg-1);">
+                  <Image
+                    src={oddsHome}
+                    alt="Flash Odds homepage with a featured NFL game comparing posted player lines to Flash projections, and a cross-sport player search"
+                    widths={[640, 960, 1440]}
+                    sizes="(min-width: 1024px) 540px, calc(100vw - 48px)"
+                    loading="lazy"
+                    class="block h-auto w-full"
+                  />
+                </div>
+                <figcaption class="mt-3 text-xs text-ink-faint">Live site, captured September 2026.</figcaption>
+              </figure>
             </div>
           </article>
         )}
@@ -98,7 +145,7 @@ const experience = [
         <div class="grid gap-0 md:grid-cols-2">
           {[flashProps, chalkline].filter(Boolean).map((project, index) => project && (
             <article class={`reveal py-14 ${index === 0 ? 'md:pr-10' : 'border-t md:border-l md:border-t-0 md:pl-10'} hairline`}>
-              <p class="section-kicker">Selected project</p>
+              <p class="section-kicker">{pairKicker[project.id] ?? 'Selected project'}</p>
               {/* The slot is reserved whether or not a logo exists, so the two
                   columns keep their baselines aligned when only one has a mark. */}
               <div class="mt-5 flex h-10 items-center">
@@ -117,27 +164,16 @@ const experience = [
               <p class="mt-4 leading-relaxed text-ink-soft">{project.data.tagline}</p>
               <ul class="mt-6 m-0 list-none space-y-3 p-0">
                 {project.data.highlights.slice(0, 3).map((item) => (
-                  <li class="text-sm leading-relaxed text-ink-mute">{item}</li>
+                  <li class="border-l pl-4 text-sm leading-relaxed text-ink-mute hairline">{item}</li>
                 ))}
               </ul>
-              <a class="rule-link mt-7 text-sm" href={`${base}${project.id}/`}>View project</a>
+              <div class="mt-7 flex flex-wrap gap-x-7 gap-y-3">
+                <a class="rule-link text-sm" href={`${base}${project.id}/`}>Read the case study</a>
+                {project.data.links.live && <a class="text-sm text-ink-soft hover:text-ink" href={project.data.links.live}>Live product</a>}
+              </div>
             </article>
           ))}
         </div>
-
-        {sessionBrain && (
-          <article class="reveal border-t pt-16 hairline">
-            <div class="grid gap-10 lg:grid-cols-[.85fr_1.15fr] lg:items-start">
-              <div>
-                <p class="section-kicker">Distributed systems</p>
-                <h3 class="mt-3 text-3xl font-semibold text-ink">{sessionBrain.data.title}</h3>
-                <p class="mt-4 leading-relaxed text-ink-soft">{sessionBrain.data.tagline}</p>
-                <a class="rule-link mt-7 text-sm" href={`${base}${sessionBrain.id}/`}>Read the architecture story</a>
-              </div>
-              {sessionBrain.data.diagram && <FlowDiagram id={sessionBrain.data.diagram} />}
-            </div>
-          </article>
-        )}
       </div>
     </section>
 
@@ -161,24 +197,41 @@ const experience = [
             </li>
           ))}
         </ol>
+        <p class="mt-4 text-sm text-ink-mute">
+          The district reimbursement system has its own write-up: <a class="text-brand" href={`${base}mcpss-travel-suite/`}>MCPSS Travel and Voucher Suite</a>.
+        </p>
       </div>
     </section>
 
-    <section class="border-t hairline">
+    <section id="more" class="scroll-mt-24 border-t hairline">
       <div class="mx-auto max-w-6xl px-6 py-20 md:py-24">
         <div class="mb-8 max-w-2xl">
-          <p class="section-kicker">More engineering</p>
-          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Additional systems and experiments</h2>
+          <p class="section-kicker">More work</p>
+          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Different problems, same ownership</h2>
+          <p class="mt-4 leading-relaxed text-ink-soft">Smaller projects, each chosen because it shows a different skill.</p>
         </div>
         <div class="border-t hairline">
-          {more.map((project) => (
-            <a href={`${base}${project.id}/`} class="reveal group grid gap-3 border-b py-5 no-underline hairline md:grid-cols-[220px_1fr_auto] md:items-baseline md:gap-8">
-              <span class="font-medium text-ink group-hover:text-brand">{project.data.title}</span>
+          {supporting.map((project) => (
+            <a href={`${base}${project.id}/`} class="reveal group grid gap-2 border-b py-5 no-underline hairline md:grid-cols-[240px_1fr_auto] md:items-baseline md:gap-8">
+              <span>
+                <span class="block font-medium text-ink group-hover:text-brand">{project.data.title}</span>
+                {project.data.capability && <span class="mt-1 block text-xs text-ink-faint">{project.data.capability}</span>}
+              </span>
               <span class="text-sm leading-relaxed text-ink-mute">{project.data.tagline}</span>
-              <span class="text-sm text-ink-faint">View →</span>
+              <span class="hidden text-sm text-ink-faint md:inline" aria-hidden="true">View →</span>
             </a>
           ))}
         </div>
+        {archive.length > 0 && (
+          <p class="mt-8 max-w-4xl text-sm leading-relaxed text-ink-mute">
+            <span class="text-ink-faint">Other projects and earlier experiments: </span>
+            {archive.map((project, index) => (
+              <Fragment>
+                <a class="text-ink-soft hover:text-ink" href={`${base}${project.id}/`}>{project.data.title}</a>{index < archive.length - 1 ? ', ' : '.'}
+              </Fragment>
+            ))}
+          </p>
+        )}
       </div>
     </section>
 
@@ -186,18 +239,21 @@ const experience = [
       <div class="mx-auto max-w-6xl px-6 py-20 md:py-24">
         <div class="mb-10 max-w-3xl">
           <p class="section-kicker">Open source</p>
-          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Extracted, not invented</h2>
-          <p class="mt-4 leading-relaxed text-ink-soft">Reusable pieces pulled out of systems that shipped, then stripped of private infrastructure, branding, and data sources.</p>
+          <h2 class="mt-3 text-3xl font-semibold text-ink md:text-4xl">Extracted from shipped work</h2>
+          <p class="mt-4 leading-relaxed text-ink-soft">Reusable pieces pulled out of the systems above, stripped of private infrastructure and data, and published so the claims on this page can be checked in code.</p>
         </div>
         <div class="border-t hairline">
           {OSS.map((repo) => (
-            <a href={repo.repo} class="reveal group grid gap-2 border-b py-5 no-underline hairline md:grid-cols-[280px_100px_1fr] md:gap-6">
-              <span class="font-mono text-[13px] font-medium text-ink group-hover:text-brand">{repo.name}</span>
-              <span class="text-xs text-ink-faint">{repo.lang}</span>
+            <a href={repo.repo} class="reveal group grid gap-2 border-b py-5 no-underline hairline md:grid-cols-[280px_1fr] md:gap-8">
+              <span>
+                <span class="block font-mono text-[13px] font-medium text-ink group-hover:text-brand">{repo.name}</span>
+                <span class="mt-1 block text-xs text-ink-faint">{repo.lang}{repo.proves ? ` · from ${repo.proves}` : ''}</span>
+              </span>
               <span class="text-sm leading-relaxed text-ink-mute">{repo.blurb}</span>
             </a>
           ))}
         </div>
+        <a class="rule-link mt-8 text-sm" href="https://github.com/iFan6oy">Everything else on GitHub</a>
       </div>
     </section>
 
@@ -216,8 +272,8 @@ const experience = [
               class="w-40 shrink-0 rounded-xl border object-cover hairline sm:w-44"
             />
             <div class="space-y-4 leading-relaxed text-ink-soft">
-              <p>I'm an application developer with a computer science background and professional experience shipping internal business systems.</p>
-              <p>My independent work spans APIs, AI workflows, backend systems, cross-device applications, and native TV software. I care about the whole lifecycle: understanding the problem, building the implementation, operating it, and improving it from real usage.</p>
+              <p>I'm an application developer based in Mobile, Alabama, with a computer science degree and professional experience building business software that people depended on to do their jobs.</p>
+              <p>Since going independent I've built my own products: a media platform that runs on four kinds of devices, a commercial sports data API, a consumer sports site, and a classroom tool for teachers. I care about the whole lifecycle: understanding the problem, building it, running it in production, and improving it from real use.</p>
             </div>
           </div>
         </div>

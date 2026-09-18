@@ -27,9 +27,17 @@ const projects = defineCollection({
       'automation',
       'power',
       'trading',
+      'web',
+      'games',
     ]),
-    // homepage placement
-    group: z.enum(['selected', 'engineering']),
+    // homepage placement: flagship and selected get editorial treatment,
+    // supporting gets a compact row, archive keeps its case study route but
+    // stays off the homepage.
+    group: z.enum(['flagship', 'selected', 'supporting', 'archive']),
+    /** plain-English capability this project proves, shown on supporting rows */
+    capability: z.string().optional(),
+    /** optional search/social description; falls back to tagline */
+    description: z.string().optional(),
     role: z.string().default('Solo Developer'),
     year: z.coerce.string().default('2026'),
     status: z.enum(['Live', 'Active', 'Shipped', 'Prototype', 'Archived']),
@@ -55,6 +63,16 @@ const projects = defineCollection({
     private: z.boolean().default(false), // source can't be public; no repo link
 
     // ---- structured case study (all optional) ----
+    /** plain-English "what it is", rendered before any engineering detail */
+    overview: z.string().optional(),
+    /** real product screenshots, resolved and optimized by astro:assets */
+    screenshots: z
+      .array(z.object({ src: image(), alt: z.string(), caption: z.string().optional() }))
+      .default([]),
+    /** technical evidence, rendered as "Under the hood" after the plain story */
+    engineering: z.array(z.string()).default([]),
+    /** links to related case studies, by slug */
+    related: z.array(z.object({ slug: z.string(), label: z.string() })).default([]),
     problem: z.string().optional(),
     constraints: z.array(z.string()).default([]),
     architecture: z.string().optional(),

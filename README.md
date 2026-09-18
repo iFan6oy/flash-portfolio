@@ -54,7 +54,8 @@ The portfolio should sell the engineering work, not the visual theme.
 - Real screenshots and artifacts are preferred over decorative generated artwork.
 - No aura blobs, neon glows, sci-fi framing, fake terminals, skill meters, or logo walls.
 - Avoid walls of cards and pill tags. Use typography, whitespace, dividers, and hierarchy.
-- Flashpoint is the flagship; selected projects get editorial treatment; supporting work uses compact rows.
+- Flashpoint is the flagship; Flash Odds, Flash Props, and Chalkline get editorial treatment; supporting work uses compact rows.
+- Plain English first. Every homepage line should make sense to a recruiter before any architecture vocabulary appears.
 - Professional experience appears before the long-tail project and open-source indexes.
 - Technology lists stay quiet. The project narrative should prove the skill.
 - Do not render a "what this demonstrates" section. The case study itself should demonstrate it.
@@ -67,8 +68,20 @@ The portfolio should sell the engineering work, not the visual theme.
 Each project lives in `src/content/projects/`. Frontmatter is validated by
 `src/content.config.ts`; invalid content fails the Astro build.
 
+`group` controls homepage placement: `flagship` (Flashpoint), `selected` (Flash Odds,
+Flash Props, Chalkline), `supporting` (compact rows, each with a plain `capability`
+label), and `archive` (route kept, linked only from a one-line list). Case studies are
+written plain English first: `tagline`, `overview`, and `highlights` must make sense to
+a non-engineer. Jargon belongs in `engineering`, `architecture`, `decisions`, and
+`hardProblems`, which render after an explicit hand-off line.
+
 Strong case studies may include:
 
+- `overview`
+- `highlights`
+- `screenshots` (real product captures in `src/assets/screens/`, optimized by astro:assets)
+- `engineering`
+- `related`
 - `problem`
 - `constraints`
 - `architecture`

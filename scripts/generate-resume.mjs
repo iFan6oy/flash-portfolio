@@ -95,25 +95,26 @@ function layout(scale) {
   S = scale; y = TOP; ops = [];
 
   centered('JAYLON MALONE', 17, 'F2', BLUE); y -= s(18);
-  centered('Software Engineer | Application Developer | AI & Systems Engineering', 9.6, 'F2', '0 0 0'); y -= s(14);
+  centered('Application Developer | Software Engineer | Full-Stack, APIs, Automation & AI', 9.6, 'F2', '0 0 0'); y -= s(14);
   centered('Mobile, AL | (251) 391-5222 | jaylon@flashaisolutions.org', 8.2, 'F1', '0 0 0'); y -= s(11);
   centered('flashaisolutions.org/work | github.com/iFan6oy | linkedin.com/in/jaylon-malone-3b306b37', 8.2, 'F1', BLUE); y -= s(5);
 
   section('Professional Summary');
-  para('Application developer and systems builder with a B.S. in Computer Science and professional experience shipping enterprise automation, cross-device applications, APIs/data products, AI workflows, and Linux-hosted production systems. Works end to end across TypeScript, Python, Kotlin, C#, SQL, React/React Native, Power Platform, PostgreSQL/SQLite, and modern API tooling.', 8.7, 10.2);
+  para('Application developer with a B.S. in Computer Science and professional experience building production business applications. Builds and operates software end to end: consumer web apps, commercial APIs and data products, AI-assisted products, automation, and native apps for iPhone, desktop, Fire TV, and Samsung TV. Works across TypeScript, Python, Kotlin, C#, SQL, SvelteKit, React/Next.js, React Native, Power Platform, and PostgreSQL/SQLite.', 8.7, 10.2);
 
   section('Technical Skills');
   skill('Languages', 'TypeScript, Python, JavaScript, Kotlin, C#, SQL');
-  skill('Application', 'React, React Native/Expo, Next.js, Preact, Electron, Jetpack Compose, Astro, Power Apps');
+  skill('Application', 'React, SvelteKit/Svelte, React Native/Expo, Next.js, Preact, Electron, Jetpack Compose, Astro, Power Apps');
   skill('Backend & Data', 'Node.js, Hono, Express, FastAPI, REST/OpenAPI, MCP, PostgreSQL, SQLite, Prisma, Drizzle, Zod, JSON Schema');
   skill('AI & Systems', 'LLM pipelines, tool calling, grounding/verification, Linux, Docker, PM2, Caddy/Nginx, GitHub Actions, Power Automate, SharePoint, Power BI');
 
   section('Professional Experience');
   entry('Flash AI Solutions | Founder & Engineer | Remote', 'Jan 2026 - Present');
   bullet('Build and operate production software across AI systems, APIs/data products, automation, and cross-device applications, owning architecture, implementation, deployment, monitoring, and iteration.');
-  bullet('Shipped Flash Props, a commercial sports/esports API whose OpenAPI REST surface and 12-tool MCP interface share normalized typed models, with HMAC-hashed API keys, tiered rate limits, Stripe billing, and evidence-backed data flows.');
-  bullet('Built Flashpoint across Electron, React Native, Kotlin/Jetpack Compose for Fire TV, and Preact for Samsung Tizen; four clients share one session authority with language-aware source ranking, server-side continuation, and cross-device playback state.');
-  bullet('Operate roughly 30 supervised services on a Linux/Hetzner VPS behind Caddy TLS and publish reusable engineering components extracted from shipped systems, including TV focus navigation, continuity patterns, schemas, and monitoring infrastructure.');
+  bullet('Built Flashpoint, a daily-use media platform with native apps on Electron, React Native, Kotlin/Jetpack Compose (Fire TV), and Preact (Samsung Tizen) sharing one library and playback session; shipped an adaptive home screen, canonical music search with artist pages, and device-ownership fixes.');
+  bullet('Built Flash Odds (SvelteKit 2, Svelte 5, ECharts), a live sports stats site with cross-sport player search, player/team/match pages, comparisons, and visual leaderboards; server-side Free/Pro gating, SWR caching, and continuous deployment with automatic rollback.');
+  bullet('Shipped Flash Props, a commercial sports/esports data API with generated OpenAPI docs and a 12-tool MCP server for AI agents over the same typed models; HMAC-hashed keys, tiered limits, Stripe billing, and a 14M+ snapshot line-history archive.');
+  bullet('Operate the stack on a Linux VPS (PM2, Caddy, systemd) and publish reusable components extracted from shipped systems, including a TV focus-navigation library and a cross-device continuity playbook.');
 
   entry('Mobile County Public Schools | Application Developer | Mobile, AL', 'Apr 2024 - Jan 2026');
   bullet('Owned the district travel reimbursement and voucher platform across Power Apps, Power Automate, SharePoint, and Microsoft 365, consolidating three applications into one approval pipeline.');
@@ -124,12 +125,10 @@ function layout(scale) {
   bullet('Built process automation with UiPath and Power Platform, wrote SQL reporting, created Power BI dashboards, and wrote PowerShell/VB scripts for internal support automation.');
 
   section('Selected Engineering Work');
-  entry('Chalkline | TypeScript, Next.js 16, React 19, Zod, PostgreSQL, Vitest', '2026');
-  bullet('Built an AI-assisted teaching-materials studio where typed validation, automated tests, and a verification harness check printable worksheet output before it reaches users.');
+  entry('Chalkline | TypeScript, Next.js 16, React 19, Zod, Vitest', '2026');
+  bullet('Built a live teaching-materials app that turns a topic into printable lessons and worksheets; model output is schema-validated and answer keys are independently checked (math computed in code), with ~1,900 automated tests.');
   entry('TV Focus Navigation Kit | Kotlin, Jetpack Compose for TV, Gradle', '2026');
-  bullet('Extracted hard D-pad behavior from a shipped Fire TV client into a reusable library/demo covering bring-into-view, hero scroll-race protection, cross-zone focus resolution, and restore-on-back.');
-  entry('FirstApply | TypeScript, Node.js, Supabase/PostgreSQL, LLM Matching', '2026');
-  bullet('Built a job discovery pipeline that rejects matches until it verifies the role is genuinely remote and the application path is free, combining deterministic checks with LLM-assisted matching.');
+  bullet('Extracted hard D-pad behavior from a shipped Fire TV client into a public library and demo covering bring-into-view, hero scroll-race protection, cross-zone focus resolution, and restore-on-back.');
 
   section('Education');
   text(M, y, s(8.9), 'Bachelor of Science in Computer Science | University of South Alabama | 2023');

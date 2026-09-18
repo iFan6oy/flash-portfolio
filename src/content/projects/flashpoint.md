@@ -1,9 +1,10 @@
 ---
 title: Flashpoint
-tagline: A personal media platform with four native clients sharing one session, built across Electron, React Native, Kotlin for Fire TV, and Preact for Samsung Tizen.
-cover: /covers/flash-media-hub.png
+tagline: A personal media platform I use every day on my desktop, iPhone, Fire TV, and Samsung TV. The same library and playback follow me from screen to screen, and each app is built natively for its device.
+description: Flashpoint is a cross-device media platform with native desktop, iPhone, Fire TV, and Samsung TV apps sharing one library and one playback session. Case study by Jaylon Malone.
+cover: /covers/flashpoint-firetv.webp
 category: media
-group: selected
+group: flagship
 role: Architect and sole developer
 year: 2025 to present
 status: Active
@@ -16,101 +17,119 @@ stack:
   - Python
   - Kotlin / Jetpack Compose
   - React Native / Expo
-  - Preact / Vite
+  - Preact / Vite (Tizen)
   - Electron
   - Linux / PM2 / Caddy
+overview: >-
+  Flashpoint is where I watch shows and movies, listen to music, follow live
+  sports and news, and pick up where I left off, on whatever screen is closest.
+  Start something on the desktop, move it to the living-room TV, and keep the
+  music going on the phone. It is a real product in daily use, not a demo, and it
+  is the project where I have learned the most about building software that has
+  to behave the same way on very different devices.
 highlights:
-  - Four client runtimes over one backend, each native to its platform rather than a wrapped web view
-  - Playback resolution ranks candidate sources by measured audio language, not by filename guessing
-  - Server-side episode lifespan engine drives continuation, so the TV never has to invent what plays next
-  - Build gates on the Tizen client fail the build on spatial-navigation and platform-baseline regressions
+  - Four apps, one library. Desktop, iPhone, Fire TV, and Samsung TV share the same history, favorites, and what is playing right now.
+  - Home adapts to the moment. A game day, breaking news, or a late night gets a different layout instead of the same fixed grid.
+  - Music search finds the real artist and their official releases, even when the catalog lists lookalike duplicates first.
+  - The TV apps are built for a remote. Every screen works with a D-pad from across the room, and focus never gets stuck.
+  - One device owns playback at a time, and an idle laptop or a sleeping TV can no longer hold onto the session.
+  - When a video buffers, the system diagnoses why instead of blindly jumping to a different source.
+engineering:
+  - "Four client runtimes over one Python backend: Electron on desktop, React Native with Expo on iPhone (over-the-air updates), Kotlin with Jetpack Compose on Fire TV, and Preact compiled for Samsung Tizen."
+  - Contextual Home chooses between five layout recipes from real signals (time of day, live games for followed teams, news, what changed since the last visit), replacing a home screen that fired roughly 45 requests per open.
+  - Canonical music search ranks artist candidates by catalog evidence and personal listening history, then renders artist pages progressively so the header appears before the heavier catalog data loads.
+  - Episode continuation has one authority on the server with a Kotlin port on Fire TV, replacing nine separate code paths that could each decide an episode had ended.
+  - "Playback Fortress: every buffering watchdog routes through one gate, so a stall is treated as evidence to diagnose rather than permission to replace the source. It shipped with 246 new tests."
+  - The Samsung build runs spatial-navigation and platform checks that fail the build on focus regressions.
 links: {}
+related:
+  - slug: session-brain
+    label: "Deep dive: keeping playback in sync across four devices"
+  - slug: tv-focus-kit
+    label: The TV remote-navigation library extracted from the Fire TV app
 problem: >-
   I wanted one place for everything I watch and listen to, on every screen I own,
   where the session follows me instead of restarting. Nothing off the shelf does
-  that, because the hard part is not the catalog. It is that a phone, a desktop,
-  and two very different televisions each have their own idea of what is playing
-  right now, and they are all slightly wrong.
+  that well. The catalog is not the hard part. The hard part is that a phone, a
+  desktop, and two very different televisions each have their own idea of what is
+  playing right now, and each can be slightly wrong.
 constraints:
-  - A Fire TV stick and a Samsung television are weak, memory-constrained devices. Anything that feels fine on a laptop can stutter there.
-  - Televisions are driven by a D-pad, not a pointer. Focus has to be unmistakable from across a room and can never dead-end.
-  - Upstream metadata and media sources are inconsistent and change without warning, so resolution has to degrade rather than fail.
-  - Solo project. Four clients means every abstraction has to earn its keep or it becomes four times the maintenance.
+  - A Fire TV stick and a Samsung television are slow, memory-constrained devices. Something that feels fine on a laptop can stutter there.
+  - Televisions are driven by a remote, not a mouse. Focus has to be obvious from across a room and can never dead-end.
+  - Outside metadata and media sources are inconsistent and change without warning, so the app has to degrade gracefully instead of failing.
+  - I build it alone. Four apps means every shared piece has to earn its keep, or it becomes four times the maintenance.
 architecture: >-
-  A Python service on a Linux VPS owns backend concerns: playback resolution,
-  metadata identity, per-profile library state, and the event firehose. Four
-  clients sit on top of it. Ephemeral presence (who is here, what is playing this
-  second) moves over a fast, deliberately lossy mesh with a frozen heartbeat
-  payload. Anything that has to survive a refresh, like resume position and
-  history, goes to a durable store instead. A session authority sits between them
-  and decides who owns the session when the two disagree.
+  A Python service on a Linux server owns the shared work: finding playable
+  sources, matching titles and artists to the right identity, per-profile library
+  state, and an event log that other tools read. Four clients sit on top of it.
+  Fast, short-lived presence (which device is here, what is playing this second)
+  moves over a lightweight channel that is allowed to be briefly wrong. Anything
+  that must survive a refresh, like resume position and history, goes to durable
+  storage. Ownership rules decide which device controls playback when those two
+  views disagree.
 decisions:
-  - title: Native clients per platform, not one wrapped web view
+  - title: A native app per platform, not one wrapped web page
     body: >-
-      The TV clients are the reason. Fire TV runs Kotlin with Jetpack Compose and
-      Samsung runs Preact compiled for Tizen, because D-pad focus and
-      memory behavior on those devices are platform problems, not CSS problems. A
-      shared web view would have made all four clients equally mediocre on the two
-      that matter most.
-  - title: Freeze the wire contract before touching the clients
+      The TVs are the reason. Remote-control focus and memory behavior on a Fire
+      TV stick or a Samsung panel are platform problems, not styling problems. One
+      shared web view would have made all four apps equally mediocre on the two
+      screens that matter most in a living room.
+  - title: Freeze the shared message format before changing the clients
     body: >-
-      With four clients on different release cadences, a change to the shared
-      payload means a coordinated release across an app store, a TV store, and two
-      side-loaded builds. Freezing the heartbeat contract at a fixed field set
-      meant the backend could evolve without every client upgrading in lockstep.
-  - title: Rank playback sources by measured audio language
+      The four apps update on different schedules: an app store, a TV store, and
+      side-loaded builds. Freezing the heartbeat message at a fixed set of fields
+      lets the backend evolve without forcing every app to update in lockstep.
+  - title: Decide the source once, then protect that decision
     body: >-
-      Choosing a sub or dub used to mean picking a track inside one already-chosen
-      file, which quietly failed whenever the chosen release did not carry the
-      wanted language. Moving the language decision up into source ranking made the
-      preference change which release wins, so the request is satisfied by
-      selection rather than hoped for after the fact.
-  - title: Episode continuation lives on the server
+      Playback used to react to any buffering by swapping to another source,
+      which hid the real bug and punished good sources. Now the source is chosen
+      once, and recovery keeps that choice unless the evidence actually blames it.
+  - title: The server decides what plays next
     body: >-
-      A television is the worst place to hold state. Putting the lifespan engine
-      server-side means the TV asks what plays next and renders the answer, instead
-      of each client reimplementing the same ordering rules slightly differently.
+      A television is the worst place to hold logic. With continuation on the
+      server, the TV asks what is next and renders the answer instead of each app
+      reimplementing the same ordering rules slightly differently.
 hardProblems:
-  - title: The hero scroll-race
+  - title: Lookalike artists in music search
     body: >-
-      On the TV client, a hero's auto-focused button fought the list's
-      bring-into-view behavior during the screen's enter transition, so the title
-      landed clipped under the nav. The fix was a scroll guard that pins the list
-      while the hero holds focus, rather than the usual fixed delay that works on
-      one device and races on another. That pattern is now extracted and public.
-  - title: Mid-play language switching without dropping the picture
+      The music catalog lists fake duplicates of famous artists ahead of the real
+      ones, such as a Drake page with 158 fans. Searching by name alone picked the
+      impostor. The new search scores candidates by the size of their real catalog
+      and by what I actually listen to. While fixing it I found that the server's
+      artist-identity code had been lost in an earlier repository rewrite and
+      restored it with tests.
+  - title: The TV that would not let go
     body: >-
-      Switching audio mid-episode tries the cheap path first. If the open file
-      already carries the wanted language it is an in-place track switch and
-      playback never stops. Only when it does not does the system re-resolve, and
-      the re-resolve carries the live position forward so it does not snap back to
-      the server's last checkpoint.
-  - title: Four clients, one truth
+      A Fire TV that had gone to sleep kept reporting itself as idle forever, so
+      the cleanup for silent devices never removed it. It held the session for
+      almost three hours and routed phone audio to a TV that was off. A related
+      fix made device priority a tie-breaker only, so a paused laptop can no
+      longer outrank a device that is actually playing.
+  - title: Buffering that was really three server bugs
     body: >-
-      Presence, playback, and resume were spread across several overlapping stores
-      that each had a partial claim on being right. Consolidating them is the
-      Session Brain work, which is a case study of its own because the migration
-      was harder than the design.
+      Investigating stalls instead of swapping sources surfaced real defects: a
+      file still being transcoded claimed it supported seeking, so a jump to
+      minute 40 returned the start of the file; a range parser could return a
+      negative length; and unattended pauses were recorded as stalls, quietly
+      damaging a good source's reputation.
+  - title: The hero scroll race on TV
+    body: >-
+      On the Fire TV app, a hero banner's auto-focused button fought the list's
+      scroll behavior during screen transitions, so the title landed clipped under
+      the nav. The fix pins the list while the hero holds focus instead of relying
+      on a fixed delay, and that pattern is now a public library.
 result:
-  - Daily-driver software across desktop, phone, and two televisions, in continuous use rather than demo state.
-  - Fire TV client shipping as a native Compose app; Samsung client shipping as a Tizen package with build-time regression gates.
-  - Four reusable pieces extracted and published as standalone open source, including the TV focus kit and the continuity playbook.
-demonstrates:
-  - Owning a system end to end across four runtimes and three languages
-  - Designing for constrained hardware instead of assuming a fast machine
-  - Contract-first thinking when clients cannot ship together
-  - Extracting general patterns out of specific production code
+  - In daily use across desktop, iPhone, Fire TV, and Samsung TV.
+  - "Recent work shipped in September 2026: the adaptive desktop Home, canonical music search with real artist pages, a sports home with live game state, live local news on Home, and the playback-reliability work."
+  - A new session authority is built and running in shadow mode next to the existing system. It does not control playback yet; see the Session Brain deep dive.
+  - Several reusable pieces have been extracted and published as open source, including the TV focus kit and the cross-device continuity playbook.
 ---
 
-Flashpoint is the largest system I have built and the one I use every day. It is a
-personal media platform, but the interesting engineering is not the catalog. It is
-that four different client runtimes have to agree about a single session while
-running on hardware that ranges from a desktop to a television stick.
-
-The source stays private because it is wired into my own accounts and home
-infrastructure. The parts that generalize have been pulled out, documented, and
-published on their own, which is where most of the public repositories on this site
-came from.
+Flashpoint is the largest system I have built and the one I use every day. The
+source stays private because it is wired into my own accounts and home setup. The
+parts that generalize have been pulled out, documented, and published on their
+own, which is where most of the public repositories on this site came from.
 
 > Presented as a sanitized case study. No personal data, credentials, or private
-> integrations are shown.
+> integrations are shown. The screenshot is the Fire TV app's home screen with
+> remote focus on the first Continue Watching card.
